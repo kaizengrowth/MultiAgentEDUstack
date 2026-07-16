@@ -218,15 +218,51 @@ def cmd_insert_decay_flag(args: argparse.Namespace) -> None:
     print(f"decay flag: unit {args.curriculum_unit_id} -- {args.reason}")
 
 
+TELEMETRY_EVENT_TYPES = {
+    # desk / pipeline
+    "surfaced",
+    "opened",
+    "cited_in_post",
+    "promoted_to_curriculum",
+    # learning (curriculum unit)
+    "unit_opened",
+    "summary_completed",
+    "quiz_attempted",
+    "quiz_passed",
+    "exercise_submitted",
+    "project_started",
+    "project_completed",
+    "transfer_observed",
+}
+
+
 def cmd_log_telemetry(args: argparse.Namespace) -> None:
+    if args.curated_item_id is None and args.curriculum_unit_id is None:
+        raise SystemExit(
+            "log-telemetry requires --curated-item-id and/or --curriculum-unit-id"
+        )
     conn = get_connection()
     conn.execute(
-        "INSERT INTO telemetry_events (curated_item_id, event_type, detail) VALUES (?, ?, ?)",
-        (args.curated_item_id, args.event_type, args.detail),
+        """
+        INSERT INTO telemetry_events
+            (curated_item_id, curriculum_unit_id, event_type, detail)
+        VALUES (?, ?, ?, ?)
+        """,
+        (
+            args.curated_item_id,
+            args.curriculum_unit_id,
+            args.event_type,
+            args.detail,
+        ),
     )
     conn.commit()
     conn.close()
-    print(f"telemetry: item {args.curated_item_id} -- {args.event_type}")
+    target = []
+    if args.curated_item_id is not None:
+        target.append(f"item {args.curated_item_id}")
+    if args.curriculum_unit_id is not None:
+        target.append(f"unit {args.curriculum_unit_id}")
+    print(f"telemetry: {' / '.join(target)} -- {args.event_type}")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -311,10 +347,14 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--reason", required=True)
     p.set_defaults(func=cmd_insert_decay_flag)
 
-    p = sub.add_parser("log-telemetry", help="Log a solo-practitioner telemetry event")
-    p.add_argument("--curated-item-id", type=int, required=True)
-    p.add_argument("--event-type", required=True,
-                    choices=["surfaced", "opened", "cited_in_post", "promoted_to_curriculum"])
+    p = sub.add_parser("log-telemetry", help="Log a desk or learning telemetry event")
+    p.add_argument("--curated-item-id", type=int)
+    p.add_argument("--curriculum-unit-id", type=int)
+    p.add_argument(
+        "--event-type",
+        required=True,
+        choices=sorted(TELEMETRY_EVENT_TYPES),
+    )
     p.add_argument("--detail")
     p.set_defaults(func=cmd_log_telemetry)
 

@@ -15,7 +15,15 @@ Content can pass one and fail the other: technically flawless material teaching 
 ## Process
 
 1. **Pick the target.** `python3 scripts/db.py pending-review` lists curriculum units awaiting review. Read the unit's spec file (and its lab spec, if one exists) in full.
-2. **Pedagogical soundness pass.** Is the objective genuinely observable (see curriculum-scaffold's completion criterion)? Is the competency/proficiency-level mapping defensible? If there's a lab, does its target-time estimate clear the bar, and is validation state-based? Write these findings as `pedagogical_notes`.
+2. **Pedagogical soundness pass.** Check, in order:
+   - Is the objective genuinely observable (see curriculum-scaffold's completion criterion)?
+   - Is the competency/proficiency-level mapping defensible?
+   - Does the spec include **Summary**, **Quizzes**, **Exercises**, and **Project** with constructive alignment (each item traces to the objective)?
+   - Do quizzes look formative (answers + feedback) rather than decorative?
+   - Does the project rubric let you pass/fail without watching the learner?
+   - Are telemetry hooks named with the learning event vocabulary (quiz/exercise/project/transfer), not only completion vanity?
+   - If there's a lab, does its target-time estimate clear the bar, and is validation state-based?
+   Write these findings as `pedagogical_notes`.
 3. **Technical accuracy pass.** Does this reflect current model/tool behavior, check the source curated item and, if it's an arXiv paper or lab release, skim the primary source again rather than trusting the digest summary. Would you personally sign off on the claim being current? Write these findings as `technical_notes`.
 4. **Present both passes to the human** in the conversation, plainly, before recording anything. Don't soften a real problem to avoid an awkward report.
 5. **Wait for an actual decision.** Only after the human states `approved`, `changes_requested`, or `rejected` do you record it:

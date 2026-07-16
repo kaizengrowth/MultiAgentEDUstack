@@ -23,20 +23,33 @@ import base
 import blog_scout
 import github_trending_scout
 import hn_scout
+import semantic_scholar_scout
 import youtube_scout
+
+from datetime import datetime, timedelta, timezone
+
+
+def _iso_days_ago(days: int) -> str:
+    return (datetime.now(timezone.utc) - timedelta(days=days)).strftime(
+        "%Y-%m-%dT%H:%M:%SZ"
+    )
 
 
 # --- arxiv_scout -------------------------------------------------------------
 
 ARXIV_ATOM = """<?xml version="1.0" encoding="UTF-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="http://www.w3.org/2005/Atom"
+      xmlns:arxiv="http://arxiv.org/schemas/atom">
   <entry>
-    <id>http://arxiv.org/abs/2507.00001v1</id>
+    <id>http://arxiv.org/abs/2507.00001v2</id>
     <title>Attention Is Still All You Need</title>
     <summary>We revisit attention with fresh eyes.</summary>
     <published>2026-07-01T00:00:00Z</published>
+    <updated>2026-07-10T00:00:00Z</updated>
     <author><name>Ada Lovelace</name></author>
     <author><name>Alan Turing</name></author>
+    <arxiv:journal_ref>Proc. ACL 2026, pp. 1-12</arxiv:journal_ref>
+    <arxiv:doi>10.1234/acl.2026.001</arxiv:doi>
   </entry>
   <entry>
     <id>http://arxiv.org/abs/2507.00002v1</id>
@@ -62,30 +75,92 @@ def test_arxiv_fetch_category_parses_atom(monkeypatch, fake_response):
 
     assert captured["url"] == arxiv_scout.ARXIV_API
     assert captured["params"]["search_query"] == "cat:cs.CL"
+    # Published versions surface via metadata updates, so sort by update time.
+    assert captured["params"]["sortBy"] == "lastUpdatedDate"
     assert len(items) == 2
 
     first = items[0]
     assert first["title"] == "Attention Is Still All You Need"
-    assert first["url"] == "http://arxiv.org/abs/2507.00001v1"
+    assert first["url"] == "http://arxiv.org/abs/2507.00001v2"
     assert first["author"] == "Ada Lovelace, Alan Turing"
     assert first["published_at"] == "2026-07-01T00:00:00Z"
+    assert first["updated_at"] == "2026-07-10T00:00:00Z"
+    assert first["journal_ref"] == "Proc. ACL 2026, pp. 1-12"
+    assert first["doi"] == "10.1234/acl.2026.001"
     assert first["category"] == "cs.CL"
+
+    second = items[1]
+    assert second["journal_ref"] is None
+    assert second["doi"] is None
+
+
+def _arxiv_entry(**overrides):
+    entry = {
+        "title": "Paper",
+        "url": "https://arxiv.org/abs/1",
+        "summary": "s",
+        "author": None,
+        "published_at": _iso_days_ago(2),
+        "updated_at": None,
+        "journal_ref": "Journal of Testing 2026",
+        "doi": None,
+        "category": "cs.CL",
+    }
+    entry.update(overrides)
+    return entry
+
+
+def test_arxiv_keep_requires_publication_venue_and_recency():
+    cutoff = datetime.now(timezone.utc) - timedelta(days=arxiv_scout.RECENT_DAYS)
+    keep = arxiv_scout._is_published_and_recent
+
+    assert keep(_arxiv_entry(), cutoff)
+    assert keep(_arxiv_entry(journal_ref=None, doi="10.1/x"), cutoff)
+    # Preprint: no journal ref, no DOI.
+    assert not keep(_arxiv_entry(journal_ref=None, doi=None), cutoff)
+    # Published but stale.
+    assert not keep(_arxiv_entry(published_at=_iso_days_ago(400)), cutoff)
+    # A recent metadata update rescues an older submission.
+    assert keep(
+        _arxiv_entry(published_at=_iso_days_ago(400), updated_at=_iso_days_ago(3)),
+        cutoff,
+    )
+    # No usable timestamp at all.
+    assert not keep(_arxiv_entry(published_at=None), cutoff)
+
+
+def test_arxiv_run_inserts_only_published_recent(db_path, monkeypatch):
+    entries = [
+        _arxiv_entry(title="Published Recent", url="https://arxiv.org/abs/1"),
+        _arxiv_entry(
+            title="Recent Preprint",
+            url="https://arxiv.org/abs/2",
+            journal_ref=None,
+            doi=None,
+        ),
+        _arxiv_entry(
+            title="Published Stale",
+            url="https://arxiv.org/abs/3",
+            published_at=_iso_days_ago(400),
+        ),
+    ]
+    monkeypatch.setattr(
+        arxiv_scout, "fetch_category", lambda category, max_results=100: entries
+    )
+    arxiv_scout.run(categories=["cs.CL"])
+
+    conn = base.get_connection()
+    rows = conn.execute("SELECT title, raw_metadata FROM raw_items").fetchall()
+    conn.close()
+    assert [r[0] for r in rows] == ["Published Recent"]
+    assert json.loads(rows[0][1])["journal_ref"] == "Journal of Testing 2026"
 
 
 def test_arxiv_run_survives_one_failing_category(db_path, monkeypatch, capsys):
-    def fake_fetch(category, max_results=25):
+    def fake_fetch(category, max_results=100):
         if category == "cs.CL":
             raise requests.RequestException("boom")
-        return [
-            {
-                "title": "Survivor Paper",
-                "url": "https://arxiv.org/abs/9",
-                "summary": "s",
-                "author": None,
-                "published_at": None,
-                "category": category,
-            }
-        ]
+        return [_arxiv_entry(title="Survivor Paper", url="https://arxiv.org/abs/9")]
 
     monkeypatch.setattr(arxiv_scout, "fetch_category", fake_fetch)
     arxiv_scout.run(categories=["cs.CL", "cs.AI"])
@@ -96,6 +171,90 @@ def test_arxiv_run_survives_one_failing_category(db_path, monkeypatch, capsys):
     rows = conn.execute("SELECT title FROM raw_items").fetchall()
     conn.close()
     assert rows == [("Survivor Paper",)]
+
+
+# --- semantic_scholar_scout ---------------------------------------------------
+
+
+def _s2_paper(**overrides):
+    paper = {
+        "paperId": "abc123",
+        "title": "Grounded Evaluation of LLM Tutors",
+        "abstract": "We evaluate tutoring systems.",
+        "url": "https://www.semanticscholar.org/paper/abc123",
+        "venue": "Computers and Education",
+        "publicationTypes": ["JournalArticle"],
+        "publicationDate": "2026-07-01",
+        "authors": [{"name": "Ada Lovelace"}, {"name": "Alan Turing"}],
+        "externalIds": {"DOI": "10.5555/ce.2026.42"},
+    }
+    paper.update(overrides)
+    return paper
+
+
+def test_s2_peer_reviewed_filter():
+    ok = semantic_scholar_scout._is_peer_reviewed
+
+    assert ok(_s2_paper())
+    assert ok(_s2_paper(publicationTypes=["Conference"], venue="ACL"))
+    # Preprint-only records: no venue, or the venue is arXiv itself.
+    assert not ok(_s2_paper(venue=""))
+    assert not ok(_s2_paper(venue=None))
+    assert not ok(_s2_paper(venue="arXiv.org"))
+    # No publication type metadata at all: cannot claim peer review.
+    assert not ok(_s2_paper(publicationTypes=None))
+    assert not ok(_s2_paper(publicationTypes=["Review"]))
+
+
+def test_s2_fetch_query_parses_papers(monkeypatch, fake_response):
+    captured = {}
+
+    def fake_get(url, params=None, timeout=None, headers=None):
+        captured["url"] = url
+        captured["params"] = params
+        return fake_response(json_data={"total": 1, "data": [_s2_paper()]})
+
+    monkeypatch.setattr(semantic_scholar_scout.requests, "get", fake_get)
+    items = semantic_scholar_scout.fetch_query("large language models")
+
+    assert captured["url"] == semantic_scholar_scout.S2_API
+    assert "venue" in captured["params"]["fields"]
+    assert "publicationTypes" in captured["params"]["fields"]
+    assert captured["params"]["sort"] == "publicationDate:desc"
+    # Recency is pushed down into the API query, not just filtered locally.
+    assert captured["params"]["publicationDateOrYear"].endswith(":")
+
+    assert len(items) == 1
+    item = items[0]
+    assert item["title"] == "Grounded Evaluation of LLM Tutors"
+    assert item["url"] == "https://www.semanticscholar.org/paper/abc123"
+    assert item["author"] == "Ada Lovelace, Alan Turing"
+    assert item["published_at"] == "2026-07-01"
+    assert item["venue"] == "Computers and Education"
+
+
+def test_s2_run_inserts_only_peer_reviewed_and_survives_failure(
+    db_path, monkeypatch, capsys
+):
+    def fake_fetch(query, recent_days=30, max_results=50):
+        if query == "broken query":
+            raise requests.RequestException("boom")
+        return [
+            semantic_scholar_scout._to_item(_s2_paper()),
+            semantic_scholar_scout._to_item(
+                _s2_paper(paperId="def456", title="Preprint Only", venue="arXiv.org")
+            ),
+        ]
+
+    monkeypatch.setattr(semantic_scholar_scout, "fetch_query", fake_fetch)
+    semantic_scholar_scout.run(queries=["broken query", "ai tutors"])
+
+    assert "FAILED for 'broken query'" in capsys.readouterr().err
+
+    conn = base.get_connection()
+    rows = conn.execute("SELECT title, scout FROM raw_items").fetchall()
+    conn.close()
+    assert rows == [("Grounded Evaluation of LLM Tutors", "semantic_scholar")]
 
 
 # --- hn_scout ----------------------------------------------------------------

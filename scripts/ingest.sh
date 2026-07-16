@@ -21,6 +21,7 @@ run_scout() {
 }
 
 run_scout "arxiv_scout"
+run_scout "semantic_scholar_scout"
 run_scout "hn_scout"
 run_scout "github_trending_scout"
 run_scout "blog_scout"

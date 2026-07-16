@@ -326,6 +326,37 @@ def test_log_telemetry(conn, capsys):
     assert row == (item_id, "cited_in_post", "linked from weekly sketch")
 
 
+def test_log_telemetry_learning_event_on_unit(conn, capsys):
+    item_id = _insert_curated(conn, "A", "https://a.example/t1", 1)
+    run_cli(
+        "insert-curriculum-unit",
+        "--title", "Audit judge corpora",
+        "--competency", "critical_evaluation",
+        "--proficiency-level", "3",
+        "--format", "durable_course",
+        "--source-curated-item-id", str(item_id),
+        "--spec-path", "curriculum/audit.md",
+    )
+    run_cli(
+        "log-telemetry",
+        "--curriculum-unit-id", "1",
+        "--event-type", "quiz_passed",
+        "--detail", "5/6",
+    )
+    row = conn.execute(
+        """
+        SELECT curated_item_id, curriculum_unit_id, event_type, detail
+        FROM telemetry_events
+        """
+    ).fetchone()
+    assert row == (None, 1, "quiz_passed", "5/6")
+
+
+def test_log_telemetry_requires_a_target(conn):
+    with pytest.raises(SystemExit):
+        run_cli("log-telemetry", "--event-type", "unit_opened")
+
+
 def test_log_telemetry_rejects_unknown_event_type(conn):
     with pytest.raises(SystemExit):
         run_cli(

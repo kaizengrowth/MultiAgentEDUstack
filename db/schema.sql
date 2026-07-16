@@ -100,11 +100,16 @@ CREATE TABLE IF NOT EXISTS editorial_reviews (
 
 -- Solo-practitioner behavior-change telemetry. Scoped down from the
 -- enterprise design in the blog post (no toolchain-wide instrumentation
--- available here): tracks whether a surfaced item actually got used.
+-- available here): tracks whether a surfaced item actually got used, and
+-- light learning events on curriculum units (quiz/exercise/project/transfer).
 CREATE TABLE IF NOT EXISTS telemetry_events (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     curated_item_id INTEGER REFERENCES curated_items(id),
-    event_type TEXT NOT NULL,            -- 'surfaced' | 'opened' | 'cited_in_post' | 'promoted_to_curriculum'
+    curriculum_unit_id INTEGER REFERENCES curriculum_units(id),
+    event_type TEXT NOT NULL,
+    -- desk: surfaced | opened | cited_in_post | promoted_to_curriculum
+    -- learning: unit_opened | summary_completed | quiz_attempted | quiz_passed
+    --           exercise_submitted | project_started | project_completed | transfer_observed
     detail TEXT,
     occurred_at TEXT NOT NULL DEFAULT (datetime('now'))
 );

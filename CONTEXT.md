@@ -43,8 +43,12 @@ _Avoid_: trends list, backlog, roadmap
 ### Curriculum and labs
 
 **Curriculum unit**:
-A scaffolded learning unit with objective, competency mapping, proficiency level, and durable-vs-frontier format. Produced by curriculum-scaffold; status moves drafted → reviewed → shipped → archived.
+A scaffolded learning unit with an observable objective, competency mapping, proficiency level, durable-vs-frontier format, and a fixed teaching shape: Summary, Quizzes, Exercises, Project (backward design + constructive alignment). Produced by curriculum-scaffold; status moves drafted → reviewed → shipped → archived.
 _Avoid_: course, lesson, module (unless referring to a deep-module design term)
+
+**Learning telemetry**:
+Light events on a curriculum unit (`unit_opened`, `quiz_passed`, `project_completed`, `transfer_observed`, etc.) stored in `telemetry_events`, used to judge engagement, performance, and transfer rather than smile-sheet completion.
+_Avoid_: LMS gradebook, individual performance scoreboard
 
 **Competency**:
 One of: tool operation, critical evaluation, workflow integration, building AI-native.

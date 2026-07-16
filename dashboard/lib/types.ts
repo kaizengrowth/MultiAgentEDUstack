@@ -108,6 +108,7 @@ export const TIER_LABELS: Record<Tier, string> = {
 
 export const SCOUT_LABELS: Record<string, string> = {
   arxiv: "arXiv",
+  semantic_scholar: "Semantic Scholar",
   hn: "Hacker News",
   github_trending: "GitHub Trending",
   blog: "Blog / Newsletter",

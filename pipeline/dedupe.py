@@ -34,6 +34,7 @@ TIER_LABELS = {
 # scout -> tier, for scouts whose tier doesn't depend on source category.
 SCOUT_TIER = {
     "arxiv": 1,
+    "semantic_scholar": 1,
     "hn": 5,
     "github_trending": 5,
     "reddit": 5,

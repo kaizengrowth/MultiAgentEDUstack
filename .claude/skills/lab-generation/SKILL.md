@@ -17,7 +17,7 @@ A lab is a performance environment, not a content-delivery mechanism. Every minu
 
 ## Process
 
-1. **Take the curriculum unit** (`python3 scripts/db.py pending-review` shows units awaiting review; a lab can be drafted for any `drafted` unit before or during that review). Read its spec file for the learning objective.
+1. **Take the curriculum unit** (`python3 scripts/db.py pending-review` shows units awaiting review; a lab can be drafted for any `drafted` unit before or during that review). Read its spec file for the learning objective, **Exercises**, and **Project** brief. The lab should deepen the project (or a heavy exercise), not replace the unit's summary/quiz layer.
 2. **State the objective as an observable end-state** before writing anything else: "learner can configure a retrieval eval and identify which of three failure modes is occurring," not "learner practices RAG evaluation."
 3. **Classify every planned step** as target/prerequisite/noise and write that breakdown into the spec explicitly, with a rough time estimate per step. If target time doesn't clear ~60%, cut steps or add scaffolding for the prerequisite parts before finalizing.
 4. **Specify validation as system state, not command history**: what the environment checks to confirm the learner succeeded (a config exists, an endpoint returns a specific response, an eval catches an injected failure), never "ran the expected command." State-based validation is what allows more than one correct path; command-matching teaches a false single-incantation model.

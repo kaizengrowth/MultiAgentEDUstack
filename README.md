@@ -42,7 +42,7 @@ forecast_watchlist
         │
         │  .claude/skills/curriculum-scaffold -- run by hand, per topic
         ▼
-curriculum_units  (learning objective, competency mapping, durable-vs-frontier call)
+curriculum_units  (objective + summary, quizzes, exercises, project; durable-vs-frontier call)
         │
         │  .claude/skills/lab-generation -- run by hand, per unit
         ▼

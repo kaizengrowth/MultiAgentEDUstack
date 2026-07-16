@@ -23,8 +23,25 @@ def get_connection() -> sqlite3.Connection:
     # Always apply schema.sql: every statement is CREATE IF NOT EXISTS, so
     # existing DBs pick up additive tables (e.g. wiki_pages) on next connect.
     conn.executescript(SCHEMA_PATH.read_text())
+    _ensure_column(
+        conn,
+        "telemetry_events",
+        "curriculum_unit_id",
+        "INTEGER REFERENCES curriculum_units(id)",
+    )
     conn.commit()
     return conn
+
+
+def _ensure_column(
+    conn: sqlite3.Connection, table: str, column: str, decl: str
+) -> None:
+    """ADD COLUMN for DBs created before schema.sql gained the field."""
+    cols = {
+        row[1] for row in conn.execute(f"PRAGMA table_info({table})").fetchall()
+    }
+    if column not in cols:
+        conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} {decl}")
 
 
 def insert_item(
