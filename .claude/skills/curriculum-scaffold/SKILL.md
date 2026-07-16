@@ -32,7 +32,7 @@ If a topic doesn't cleanly map to one of these four, it's probably not curriculu
 
 ## Required spec sections
 
-Draft `curriculum/<slug>.md` with **all** of the following headings, in this order. Omit nothing; if a section would be empty, the topic is not ready.
+Draft `published/curriculum/YYYY-MM-DD/<slug>.md` (today's date) with **all** of the following headings, in this order. Omit nothing; if a section would be empty, the topic is not ready.
 
 ### 1. Title and meta
 
@@ -133,10 +133,11 @@ Report learning metrics at **unit or cohort** grain in any future dashboard. Do 
 1. **Pick the source.** A curated item or a matured `forecast_watchlist` entry.
 2. **Write the objective first**, then evidence of mastery, then summary → quizzes → exercises → project.
 3. **Make the durable-vs-frontier call** and write why.
-4. **Draft the full spec** under `curriculum/<slug>.md` (create `curriculum/` if needed).
-5. **Record it:**
+4. **Draft the full spec** under `published/curriculum/YYYY-MM-DD/<slug>.md` (create parent dirs if needed).
+5. **Record it and publish:**
    ```
-   python3 scripts/db.py insert-curriculum-unit --title "<title>" --competency <tool_operation|critical_evaluation|workflow_integration|building_ai_native> --proficiency-level <1-4> --format <durable_course|frontier_oneshot> --source-curated-item-id <id> --spec-path curriculum/<slug>.md
+   python3 scripts/db.py insert-curriculum-unit --title "<title>" --competency <tool_operation|critical_evaluation|workflow_integration|building_ai_native> --proficiency-level <1-4> --format <durable_course|frontier_oneshot> --source-curated-item-id <id> --spec-path published/curriculum/YYYY-MM-DD/<slug>.md
+   bash scripts/publish-output.sh
    ```
 6. **Optional:** `log-telemetry --curated-item-id <id> --curriculum-unit-id <new-id> --event-type promoted_to_curriculum`
 7. **Hand off to editorial review.** Leave status `drafted`. Do not ship.

@@ -21,7 +21,7 @@ The curriculum is a regenerable view over the database, not a pile of hand-maint
    python3 scripts/db.py insert-decay-flag --curriculum-unit-id <id> --reason "<specific reason: model version drift, superseded by <topic> velocity spike, technical claim no longer holds>"
    ```
 3. **Curation includes deletion.** If a unit's underlying tool or approach is clearly gone (not just aged), recommend archival outright rather than regeneration, say so explicitly in the reason, since a human still makes the final archive/regenerate call, this agent only flags and recommends.
-4. Write a short summary to `digests/decay-scan-YYYY-MM-DD.md`: how many units scanned, how many flagged, and the one-line reason for each.
+4. Write a short summary to `published/decay/YYYY-MM-DD.md`: how many units scanned, how many flagged, and the one-line reason for each. Then `bash scripts/publish-output.sh`.
 
 ## Completion criterion
 

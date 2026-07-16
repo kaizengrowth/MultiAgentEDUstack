@@ -10,14 +10,14 @@ Project-specific guidance for automated PR review. Prefer findings that would br
 
 ## Data and SQL
 
-- SQL (`db/maes.sqlite3` via `db/schema.sql`) is the source of truth. Flag hand-edits to generated digests/wiki/curriculum/labs/transcripts as the primary fix path.
+- SQL (`db/maes.sqlite3` via `db/schema.sql`) is the source of truth. Flag hand-edits to generated `published/` markdown as the primary fix path; regenerate from data instead.
 - Every DB read/write should go through `scripts/db.py`. Flag freehand SQL in skills, one-off scripts, or dashboard write paths that bypass the CLI.
 - Scouts must stay idempotent on `(scout, source_url)` via `scouts/base.py`. New scouts need a tier in `pipeline/dedupe.py` or they default to tier 4.
 
 ## Security
 
 - Never commit `.env`, API tokens, OAuth secrets, or cloud credentials. `.env.example` is the only template.
-- Flag SSRF / unvalidated URL fetches in scouts, command injection in shell wrappers, and path traversal when reading markdown under `digests/`, `wiki/`, `curriculum/`, or `labs/`.
+- Flag SSRF / unvalidated URL fetches in scouts, command injection in shell wrappers, and path traversal when reading markdown under `published/`.
 - Dashboard is read-only over SQLite. Flag any new write API or remote code execution surface.
 
 ## Testing and quality

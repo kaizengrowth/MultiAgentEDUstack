@@ -18,13 +18,14 @@ This skill is for the day-to-day feed. The durable weekly rollup is `/weekly-wik
    - **Trends**: 2-4 short paragraphs on patterns visible across today's items: what themes are recurring, what is accelerating or cooling, where independent sources are converging. Velocity over volume.
    - **Predictions**: 1-2 paragraphs on what today's signals suggest for the near future of AI (an 8-12 week horizon, same as the forecast watchlist). Hedge honestly: state the signal, the inference, and what would confirm or kill it. If a prediction firms up across several digests, promote it via `/trend-forecast` rather than restating it daily.
    - **Top picks**: the 3-5 highest-quality items of the run, each with its link and one sentence on why it beat the rest (tier, corroboration, methodological rigor, or direct teaching value).
-5. **Save the digest** to `digests/YYYY-MM-DD.md` (create `digests/` if absent; gitignored runtime output). Use house style: direct, no hype-adjectives, name the mechanism not just the headline. Keep it scannable: this is a daily brief, not a weekly essay.
+5. **Save the digest** to `published/digests/YYYY-MM-DD.md` (create parent dirs if needed). This tree is git-tracked and pushed to GitHub. Use house style: direct, no hype-adjectives, name the mechanism not just the headline. Keep it scannable: this is a daily brief, not a weekly essay.
 6. **Record the run and close the loop:**
    ```
-   python3 scripts/db.py insert-digest --period-start <ISO date of oldest item> --period-end <today> --markdown-path digests/YYYY-MM-DD.md --item-count <N>
+   python3 scripts/db.py insert-digest --period-start <ISO date of oldest item> --period-end <today> --markdown-path published/digests/YYYY-MM-DD.md --item-count <N>
    python3 scripts/db.py mark-digested <id1> <id2> ...
+   bash scripts/publish-output.sh
    ```
-   Mark every item that made it into the digest, in one call. Items you deliberately excluded stay `new`. Don't mark-digested items you didn't write up.
+   Mark every item that made it into the digest, in one call. Items you deliberately excluded stay `new`. Don't mark-digested items you didn't write up. `publish-output.sh` commits and pushes `published/` when anything changed.
 
 ## Writing style
 

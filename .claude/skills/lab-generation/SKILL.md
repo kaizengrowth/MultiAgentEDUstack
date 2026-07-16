@@ -22,9 +22,10 @@ A lab is a performance environment, not a content-delivery mechanism. Every minu
 3. **Classify every planned step** as target/prerequisite/noise and write that breakdown into the spec explicitly, with a rough time estimate per step. If target time doesn't clear ~60%, cut steps or add scaffolding for the prerequisite parts before finalizing.
 4. **Specify validation as system state, not command history**: what the environment checks to confirm the learner succeeded (a config exists, an endpoint returns a specific response, an eval catches an injected failure), never "ran the expected command." State-based validation is what allows more than one correct path; command-matching teaches a false single-incantation model.
 5. **Write the environment shape**: what needs to exist (a scratch repo, a mock API, a small dataset), pinned versions for anything version-sensitive, and an explicit note that it should be ephemeral/disposable per learner attempt if it's ever actually built.
-6. **Save the spec** to `labs/<slug>.md` (gitignored runtime output) and record it:
+6. **Save the spec** to `published/labs/YYYY-MM-DD/<slug>.md` (today's date; create parent dirs if needed) and record it:
    ```
-   python3 scripts/db.py insert-lab-spec --curriculum-unit-id <id> --objective "<the observable end-state>" --spec-path labs/<slug>.md --target-time-pct <your estimate>
+   python3 scripts/db.py insert-lab-spec --curriculum-unit-id <id> --objective "<the observable end-state>" --spec-path published/labs/YYYY-MM-DD/<slug>.md --target-time-pct <your estimate>
+   bash scripts/publish-output.sh
    ```
 
 ## Writing style

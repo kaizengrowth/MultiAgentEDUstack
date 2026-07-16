@@ -4,7 +4,7 @@ Agent-readable rules for this repo. `/code-review` Standards axis reads this fil
 
 ## Source of truth
 
-- SQL is durable state. `db/maes.sqlite3` is gitignored runtime state; regenerate digests, wiki pages, curriculum, labs, and transcripts from the DB rather than hand-editing them.
+- SQL is durable structured state. `db/maes.sqlite3` is gitignored. Regenerable markdown lives under `published/` (category/date) and is pushed via `scripts/publish-output.sh`; regenerate from the DB rather than hand-editing.
 - Schema lives in `db/schema.sql`. Prefer additive migrations; document hard trade-offs as ADRs under `docs/adr/`.
 
 ## Database access

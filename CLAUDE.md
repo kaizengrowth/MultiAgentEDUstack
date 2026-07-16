@@ -29,9 +29,10 @@ GitHub Actions CI is `.github/workflows/ci.yml`. Automated Claude review (PR cod
 ## Working in this repo
 
 - **SQL is the source of truth.** `db/maes.sqlite3` (gitignored) is the only
-  durable state; `digests/`, `wiki/`, `curriculum/`, `labs/`, `transcripts/`
-  are all regenerable output. Never hand-edit a generated digest, wiki page,
-  or spec; fix the underlying data and regenerate.
+  durable structured state. Regenerable markdown lives under `published/`
+  (by category and date) and is committed/pushed via
+  `scripts/publish-output.sh`. Never hand-edit a generated digest, wiki page,
+  or spec as the primary fix; fix the underlying data and regenerate.
 - **Every database read/write goes through `scripts/db.py`.** Don't write
   freehand SQL in a skill or a one-off script; add a subcommand to `db.py`
   if the operation doesn't exist yet.

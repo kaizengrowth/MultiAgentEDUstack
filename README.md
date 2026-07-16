@@ -30,23 +30,23 @@ curated_items
         │
         │  .claude/skills/synthesis-digest -- daily, via headless Claude Code
         ▼
-digests/*.md  +  topics assigned back onto curated_items
+published/digests/YYYY-MM-DD.md  +  topics on curated_items
         │
         │  .claude/skills/weekly-wiki -- Sundays, rolls daily digests
         ▼
-wiki/week-*.md
+published/wiki/YYYY-MM-DD.md
         │
         │  .claude/skills/trend-forecast -- Sundays, reads assigned topics
         ▼
-forecast_watchlist
+forecast_watchlist  +  published/forecasts/YYYY-MM-DD.md
         │
         │  .claude/skills/curriculum-scaffold -- run by hand, per topic
         ▼
-curriculum_units  (objective + summary, quizzes, exercises, project; durable-vs-frontier call)
+curriculum_units  +  published/curriculum/YYYY-MM-DD/*.md
         │
         │  .claude/skills/lab-generation -- run by hand, per unit
         ▼
-lab_specs  (spec only, does not provision live infrastructure, see below)
+lab_specs  +  published/labs/YYYY-MM-DD/*.md  (spec only, no live cloud)
         │
         │  .claude/skills/editorial-review -- human-gated, never auto-approves
         ▼
@@ -89,12 +89,12 @@ claude -p "/curriculum-scaffold" --allowedTools "Bash Read Write Edit"
 
 ## The database
 
-SQL is the source of truth; digests, curriculum, and lab specs are
-regenerable views over it, the same discipline as the author's OB1/Open
-Brain setup ("the wiki is a build artifact"). Schema: `db/schema.sql`.
-The live database (`db/maes.sqlite3`) and generated output
-(`digests/`, `wiki/`, `curriculum/`, `labs/`, `transcripts/`) are gitignored:
-runtime state, not source.
+SQL is the source of truth for structured state; markdown under `published/`
+is a regenerable teaching view (same "wiki is a build artifact" discipline),
+organized by category and date and synced to GitHub by
+`scripts/publish-output.sh` after daily/weekly (and manual) generation.
+Schema: `db/schema.sql`. The live database (`db/maes.sqlite3`) and local
+logs stay gitignored.
 
 Everything an agent skill reads or writes goes through `scripts/db.py`
 (`python3 scripts/db.py --help` for the full command list) rather than

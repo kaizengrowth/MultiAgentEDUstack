@@ -13,11 +13,13 @@ next-env.d.ts
 # Runtime state, not source (repo-root only; do not ignore dashboard routes)
 db/*.sqlite3
 logs/*.log
+# Legacy local-only output dirs (pipeline writes under published/ now)
 /digests/
 /wiki/
 /curriculum/
 /labs/
 /transcripts/
+# published/ is tracked: category/date markdown synced to GitHub
 
 # Credentials
 .env

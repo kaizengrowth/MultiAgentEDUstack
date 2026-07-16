@@ -22,7 +22,7 @@ Score "how fast is this changing" rather than "how much of this is there." A top
    ```
    python3 scripts/db.py insert-watchlist --topic "<topic>" --signal-summary "<what specifically you saw and why it counts as velocity, not volume>" --confidence <high|medium|low>
    ```
-3. Write a short markdown note to `digests/forecast-YYYY-MM-DD.md` explaining each entry in one paragraph: what the signal is, why it's a leading indicator and not just noise, and what "worth teaching this" would look like if it keeps accelerating.
+3. Write a short markdown note to `published/forecasts/YYYY-MM-DD.md` explaining each entry in one paragraph: what the signal is, why it's a leading indicator and not just noise, and what "worth teaching this" would look like if it keeps accelerating. Then run `bash scripts/publish-output.sh` so GitHub picks it up (weekly.sh also publishes at the end of the Sunday run).
 
 ## Writing style
 
