@@ -74,6 +74,8 @@ def _vtt_to_text(vtt_text: str) -> str:
         line = line.strip()
         if not line or line == "WEBVTT" or "-->" in line or line.isdigit():
             continue
+        if line.startswith("Kind:") or line.startswith("Language:"):
+            continue
         line = re.sub(r"<[^>]+>", "", line)  # inline timing tags
         if line and line not in seen:
             seen.add(line)
