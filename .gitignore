@@ -3,6 +3,13 @@ __pycache__/
 .venv/
 venv/
 
+# Node / Next.js (dashboard)
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
 # Runtime state, not source
 db/*.sqlite3
 logs/*.log

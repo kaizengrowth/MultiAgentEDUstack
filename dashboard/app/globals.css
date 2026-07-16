@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Two editions, not a generic light/dark toggle: the dark mode is "the wire
+  room at night" (near-black blue-charcoal, amber teletype accent, a cyan
+  sequential ramp for credibility tier). Light is "the printed edition"
+  (warm paper, ink-black text, a deeper ochre accent). Same structure, same
+  signal vocabulary, different medium.
+*/
+
+:root,
+:root[data-theme="dark"] {
+  --bg: #0b0e13;
+  --surface: #141920;
+  --surface-raised: #1c232c;
+  --hairline: #2a323c;
+  --ink: #e8ecef;
+  --ink-secondary: #8b95a1;
+  --ink-muted: #5a6472;
+  --accent: #f0a93c;
+  --accent-ink: #0b0e13;
+  --good: #46a758;
+  --warning: #e8a33d;
+  --critical: #e5484d;
+  --tier1: #7de0ff;
+  --tier2: #4fc3e8;
+  --tier3: #359fc2;
+  --tier4: #2a7b96;
+  --tier5: #1f5a6e;
+}
+
+:root[data-theme="light"] {
+  --bg: #f3f0e8;
+  --surface: #fbfaf5;
+  --surface-raised: #ffffff;
+  --hairline: #d9d4c7;
+  --ink: #1b1f23;
+  --ink-secondary: #4b5259;
+  --ink-muted: #7a8189;
+  --accent: #a15e08;
+  --accent-ink: #fbfaf5;
+  --good: #2f9e44;
+  --warning: #a66a0a;
+  --critical: #c92a2a;
+  --tier1: #0b7285;
+  --tier2: #1098ad;
+  --tier3: #3bc9db;
+  --tier4: #66d9e8;
+  --tier5: #a8e8ef;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f3f0e8;
+    --surface: #fbfaf5;
+    --surface-raised: #ffffff;
+    --hairline: #d9d4c7;
+    --ink: #1b1f23;
+    --ink-secondary: #4b5259;
+    --ink-muted: #7a8189;
+    --accent: #a15e08;
+    --accent-ink: #fbfaf5;
+    --good: #2f9e44;
+    --warning: #a66a0a;
+    --critical: #c92a2a;
+    --tier1: #0b7285;
+    --tier2: #1098ad;
+    --tier3: #3bc9db;
+    --tier4: #66d9e8;
+    --tier5: #a8e8ef;
+  }
+}
+
+* {
+  border-color: var(--hairline);
+}
+
+html,
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+}
+
+body {
+  font-feature-settings: "ss01" 1;
+}
+
+::selection {
+  background-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* Visible keyboard focus everywhere, not just form controls */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Ticker marquee -- the one signature motion in this UI, a single
+   orchestrated loop, paused on hover, killed under reduced-motion above. */
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-track {
+  animation: ticker-scroll 60s linear infinite;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* Hairline scanline texture on the masthead, quiet, not decorative noise */
+.masthead-texture {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.02) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
