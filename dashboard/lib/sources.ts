@@ -57,6 +57,7 @@ const PLATFORM_BY_NAME: Record<string, string> = {
   "GitHub Trending": "github_trending",
   "X / Twitter": "x",
   Bluesky: "bluesky",
+  "Semantic Scholar": "semantic_scholar",
 };
 
 const REDDIT_BY_NAME: Record<string, string> = {
