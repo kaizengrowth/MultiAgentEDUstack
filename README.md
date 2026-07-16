@@ -1,10 +1,14 @@
 # MultiAgentEDUstack
 
 A working implementation of the multi-agent curriculum pipeline described in
-["Curriculum at Model Speed"](https://kaizencode.art/notepad/ai-curriculum-multi-agent-system/),
+[Curriculum at Model Speed](https://kaizencode.art/notepad/ai-curriculum-multi-agent-system/),
 a system that sources AI knowledge fast enough to matter, curates it against
 a five-tier credibility rubric, and scaffolds it into curriculum, without a
 six-month lag.
+
+[![Dashboard overview: syllabus nav, live dispatch counts, credibility tiers, and gathering rhythm](docs/images/dashboard-overview.png)](https://kaizencode.art/notepad/ai-curriculum-multi-agent-system/)
+
+*[Curriculum at Model Speed](https://kaizencode.art/notepad/ai-curriculum-multi-agent-system/) — design essay and source table.* The screenshot is the live desk that implements it.
 
 This is a real, running system, not a design doc. Everything below is either
 verified working against live data, or explicitly marked as a stub with the
