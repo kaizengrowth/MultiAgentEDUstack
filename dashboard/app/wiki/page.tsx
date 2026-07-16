@@ -22,7 +22,7 @@ export default async function WikiIndexPage() {
       {pages.length === 0 ? (
         <EmptyState
           title="No wiki pages yet."
-          hint="Run: bash scripts/weekly.sh (or claude -p \"/weekly-wiki\" ...)"
+          hint={'Run: bash scripts/weekly.sh (or claude -p "/weekly-wiki" ...)'}
         />
       ) : (
         <ul className="divide-y divide-hairline rounded border border-hairline bg-surface">
