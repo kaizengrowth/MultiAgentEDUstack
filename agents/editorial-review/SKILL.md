@@ -1,6 +1,6 @@
 ---
 name: editorial-review
-description: Human-gated review of a drafted curriculum unit or lab spec, on two axes -- pedagogical soundness and technical accuracy -- reported separately, never merged into one score.
+description: Human-gated review of a drafted curriculum unit or lab spec, on two axes (pedagogical soundness and technical accuracy), reported separately, never merged into one score.
 disable-model-invocation: true
 ---
 

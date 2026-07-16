@@ -1,6 +1,6 @@
 ---
 name: lab-generation
-description: Draft a hands-on lab spec for a curriculum unit -- objective, target/prerequisite/noise time breakdown, state-based validation plan. Use when the user wants a lab designed for a curriculum unit, or asks for hands-on practice material.
+description: Draft a hands-on lab spec for a curriculum unit: objective, target/prerequisite/noise time breakdown, state-based validation plan. Use when the user wants a lab designed for a curriculum unit, or asks for hands-on practice material.
 ---
 
 # Lab Generation Agent

@@ -1,6 +1,6 @@
 ---
 name: curriculum-scaffold
-description: Turn a curated item or forecast-watchlist topic into a scaffolded curriculum unit -- a learning objective mapped to the competency model, a durable-vs-frontier format call. Use when the user wants curriculum drafted from a topic, or asks to scaffold a lesson from something in the digest.
+description: Turn a curated item or forecast-watchlist topic into a scaffolded curriculum unit: a learning objective mapped to the competency model, a durable-vs-frontier format call. Use when the user wants curriculum drafted from a topic, or asks to scaffold a lesson from something in the digest.
 ---
 
 # Curriculum Scaffolding Agent
