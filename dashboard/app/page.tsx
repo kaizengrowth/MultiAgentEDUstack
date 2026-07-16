@@ -157,12 +157,20 @@ export default async function OverviewPage() {
               </dd>
             </div>
           </dl>
-          <Link
-            href="/pipeline"
-            className="mt-4 inline-block text-[11px] text-accent hover:underline"
-          >
-            pipeline health &rarr;
-          </Link>
+          <div className="mt-4 flex flex-col gap-1">
+            <Link
+              href="/sources"
+              className="inline-block text-[11px] text-accent hover:underline"
+            >
+              source catalog &rarr;
+            </Link>
+            <Link
+              href="/pipeline"
+              className="inline-block text-[11px] text-accent hover:underline"
+            >
+              pipeline health &rarr;
+            </Link>
+          </div>
         </div>
       </div>
     </div>
