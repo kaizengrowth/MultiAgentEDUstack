@@ -1,0 +1,11 @@
+[Unit]
+Description=Run MultiAgentEDUstack scout ingest nightly
+
+[Timer]
+# 02:15, offset from the author's existing OB1 open-brain-compile.timer
+# (02:30) so the two don't contend for CPU/network at the same moment.
+OnCalendar=*-*-* 02:15:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

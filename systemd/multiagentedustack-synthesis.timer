@@ -1,0 +1,11 @@
+[Unit]
+Description=Run MultiAgentEDUstack weekly synthesis + forecast
+
+[Timer]
+# Sunday 03:00 -- after a full week of nightly ingests, ahead of the start
+# of the work week.
+OnCalendar=Sun *-*-* 03:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

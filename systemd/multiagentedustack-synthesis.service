@@ -1,0 +1,7 @@
+[Unit]
+Description=MultiAgentEDUstack weekly synthesis + trend forecast
+
+[Service]
+Type=oneshot
+ExecStart=%h/Documents/Github/MultiAgentEDUstack/scripts/weekly.sh
+WorkingDirectory=%h/Documents/Github/MultiAgentEDUstack

@@ -1,0 +1,7 @@
+[Unit]
+Description=MultiAgentEDUstack nightly scout + dedup ingest
+
+[Service]
+Type=oneshot
+ExecStart=%h/Documents/Github/MultiAgentEDUstack/scripts/nightly.sh
+WorkingDirectory=%h/Documents/Github/MultiAgentEDUstack
