@@ -5,9 +5,9 @@ under test is the judgment each scout encodes (relevance filters, feed
 parsing, transcript cleanup) and the resilience contract from ingest.sh:
 one broken source must not take down the rest of a run.
 
-The xfail tests document known gaps between the spec ("AI-relevant") and
-the current substring keyword matching. They are strict, so fixing the
-matcher will flag them for promotion to plain asserts.
+The relevance filters match keywords on word boundaries (with an optional
+plural), never as bare substrings; the rejects-embedded-substrings tests
+pin that down for both hn and github_trending.
 """
 
 from __future__ import annotations
@@ -127,11 +127,6 @@ def test_hn_relevance_rejects_unrelated_titles(title):
     assert not hn_scout._is_ai_relevant(title)
 
 
-@pytest.mark.xfail(
-    reason="substring matching: 'ai' matches inside words like 'email', "
-    "'maintain', 'raised'; spec wants word-boundary AI relevance",
-    strict=True,
-)
 @pytest.mark.parametrize(
     "title",
     [
@@ -140,7 +135,9 @@ def test_hn_relevance_rejects_unrelated_titles(title):
         "Startup raised $10M for solar panels",
     ],
 )
-def test_hn_relevance_false_positives(title):
+def test_hn_relevance_rejects_embedded_keyword_substrings(title):
+    """'ai' inside 'email'/'maintain'/'raised' is not AI relevance; keywords
+    must match on word boundaries."""
     assert not hn_scout._is_ai_relevant(title)
 
 
@@ -239,15 +236,13 @@ def test_github_relevance_checks_name_and_description():
     )
 
 
-@pytest.mark.xfail(
-    reason="substring matching: 'ml' matches inside 'html'; spec wants "
-    "word-boundary AI/ML relevance",
-    strict=True,
-)
-def test_github_relevance_false_positive_on_html():
+def test_github_relevance_rejects_embedded_keyword_substrings():
+    """'ml' inside 'html' is not ML relevance; keywords must match on word
+    boundaries. Hyphenated repo names still count as boundaries."""
     assert not github_trending_scout._is_ai_relevant(
         "A fast html templating engine", "acme/templates"
     )
+    assert github_trending_scout._is_ai_relevant("", "acme/ml-experiments")
 
 
 # --- youtube_scout -------------------------------------------------------------

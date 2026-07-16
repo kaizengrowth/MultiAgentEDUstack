@@ -11,6 +11,7 @@ Public Firebase API, no key required.
 
 from __future__ import annotations
 
+import re
 import sys
 from datetime import datetime, timezone
 
@@ -25,10 +26,15 @@ AI_KEYWORDS = (
     "machine learning", "neural", "hugging face", "huggingface",
 )
 
+# Word-boundary match with an optional plural, so "LLMs" and "agents" hit
+# but "email"/"maintain"/"raised" don't light up the "ai" keyword.
+_KEYWORD_RE = re.compile(
+    r"\b(?:" + "|".join(re.escape(k) for k in AI_KEYWORDS) + r")s?\b"
+)
+
 
 def _is_ai_relevant(title: str) -> bool:
-    lowered = title.lower()
-    return any(keyword in lowered for keyword in AI_KEYWORDS)
+    return _KEYWORD_RE.search(title.lower()) is not None
 
 
 def fetch_top_stories(limit: int = 200) -> list[dict]:

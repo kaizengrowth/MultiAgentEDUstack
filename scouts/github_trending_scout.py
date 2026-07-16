@@ -10,6 +10,7 @@ post: tooling adoption velocity, not story discovery.
 
 from __future__ import annotations
 
+import re
 import sys
 
 import requests
@@ -26,10 +27,17 @@ AI_KEYWORDS = (
     "mistral", "llama", "ollama", "embedding", "vector", "inference",
 )
 
+# Word-boundary match with an optional plural, so "agents"/"embeddings" hit
+# but "html" doesn't light up the "ml" keyword. Hyphens and slashes in repo
+# names count as boundaries, so "acme/ml-experiments" still matches.
+_KEYWORD_RE = re.compile(
+    r"\b(?:" + "|".join(re.escape(k) for k in AI_KEYWORDS) + r")s?\b"
+)
+
 
 def _is_ai_relevant(description: str, repo_name: str) -> bool:
     text = f"{repo_name} {description}".lower()
-    return any(keyword in text for keyword in AI_KEYWORDS)
+    return _KEYWORD_RE.search(text) is not None
 
 
 def fetch_trending(since: str = "daily") -> list[dict]:
