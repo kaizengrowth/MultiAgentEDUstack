@@ -8,13 +8,15 @@ export function StatTile({
   sublabel?: string;
 }) {
   return (
-    <div className="rounded border border-hairline bg-surface px-4 py-3">
-      <div className="font-mono text-[10px] uppercase tracking-wider text-ink-muted">
+    <div className="stat-tile px-4 py-4">
+      <div className="text-xs font-medium uppercase tracking-[0.12em] text-ink-muted">
         {label}
       </div>
-      <div className="mt-1 font-mono text-2xl font-semibold text-ink">{value}</div>
+      <div className="mt-2 font-display text-3xl font-semibold tracking-tight text-ink">
+        {value}
+      </div>
       {sublabel && (
-        <div className="mt-0.5 text-[11px] text-ink-secondary">{sublabel}</div>
+        <div className="mt-1 text-sm text-ink-secondary">{sublabel}</div>
       )}
     </div>
   );

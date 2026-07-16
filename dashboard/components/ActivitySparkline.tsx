@@ -59,7 +59,7 @@ export function ActivitySparkline({ points }: { points: Point[] }) {
         x={Math.max(padX, last.x - 18)}
         y={Math.max(10, last.y - 8)}
         fontSize={11}
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-sans)"
         fill="var(--ink-secondary)"
       >
         {last.count}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { EmptyState } from "@/components/EmptyState";
 import { PageHeader } from "@/components/PageHeader";
+import { StatTile } from "@/components/StatTile";
 import { SCOUT_LABELS } from "@/lib/types";
 import {
   EnrichedSource,
@@ -16,10 +17,25 @@ const STATUS_LABEL: Record<EnrichedSource["status"], string> = {
   cataloged: "catalog only",
 };
 
-const STATUS_CLASS: Record<EnrichedSource["status"], string> = {
-  active: "text-[var(--good)] border-[var(--good)]",
-  quiet: "text-[var(--warning)] border-[var(--warning)]",
-  cataloged: "text-ink-muted border-hairline",
+const STATUS_STYLE: Record<
+  EnrichedSource["status"],
+  { color: string; border: string; background: string }
+> = {
+  active: {
+    color: "var(--good)",
+    border: "1px solid color-mix(in oklab, var(--good) 45%, transparent)",
+    background: "color-mix(in oklab, var(--good) 10%, transparent)",
+  },
+  quiet: {
+    color: "var(--warning)",
+    border: "1px solid color-mix(in oklab, var(--warning) 45%, transparent)",
+    background: "color-mix(in oklab, var(--warning) 10%, transparent)",
+  },
+  cataloged: {
+    color: "var(--ink-muted)",
+    border: "1px solid var(--hairline)",
+    background: "var(--surface-raised)",
+  },
 };
 
 export default async function SourcesPage() {
@@ -35,39 +51,21 @@ export default async function SourcesPage() {
     <div className="flex flex-col gap-6">
       <PageHeader
         title="Sources"
-        description="Credibility-tiered source catalog from the Digital Garden notepad explorer, with live pull counts as scouts land items."
-        meta={`${activeCount} active · ${catalogCount} cataloged`}
+        description="The curated source library from the Digital Garden explorer, with live counts as new material arrives."
+        meta={`${activeCount} active · ${catalogCount} in catalog`}
       />
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <div className="rounded border border-hairline bg-surface p-4">
-          <p className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">
-            Catalog
-          </p>
-          <p className="mt-1 font-mono text-2xl text-ink">{catalogCount}</p>
-        </div>
-        <div className="rounded border border-hairline bg-surface p-4">
-          <p className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">
-            Pulling now
-          </p>
-          <p className="mt-1 font-mono text-2xl text-ink">{activeCount}</p>
-        </div>
-        <div className="rounded border border-hairline bg-surface p-4">
-          <p className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">
-            Wired, quiet
-          </p>
-          <p className="mt-1 font-mono text-2xl text-ink">
-            {sources.filter((s) => s.status === "quiet").length}
-          </p>
-        </div>
-        <div className="rounded border border-hairline bg-surface p-4">
-          <p className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">
-            Catalog only
-          </p>
-          <p className="mt-1 font-mono text-2xl text-ink">
-            {sources.filter((s) => s.status === "cataloged").length}
-          </p>
-        </div>
+        <StatTile label="In catalog" value={catalogCount} />
+        <StatTile label="Pulling now" value={activeCount} />
+        <StatTile
+          label="Wired, quiet"
+          value={sources.filter((s) => s.status === "quiet").length}
+        />
+        <StatTile
+          label="Catalog only"
+          value={sources.filter((s) => s.status === "cataloged").length}
+        />
       </div>
 
       <section>
@@ -90,26 +88,26 @@ export default async function SourcesPage() {
             />
           </div>
         ) : (
-          <ul className="mt-3 divide-y divide-hairline rounded border border-hairline bg-surface">
+          <ul className="panel mt-3 divide-y divide-hairline">
             {landings.map((item) => (
               <li
                 key={item.id}
-                className="flex flex-wrap items-baseline justify-between gap-2 px-4 py-2.5"
+                className="flex flex-wrap items-baseline justify-between gap-2 px-4 py-3"
               >
                 <div className="min-w-0 flex-1">
-                  <span className="font-mono text-[11px] text-accent">
+                  <span className="text-xs font-medium text-accent">
                     {item.sourceLabel}
                   </span>
                   <a
                     href={item.source_url}
                     target="_blank"
                     rel="noreferrer"
-                    className="mt-0.5 block truncate text-sm text-ink hover:text-accent"
+                    className="mt-0.5 block truncate text-base text-ink hover:text-accent"
                   >
                     {item.title}
                   </a>
                 </div>
-                <span className="shrink-0 font-mono text-[11px] text-ink-muted">
+                <span className="shrink-0 text-xs text-ink-muted">
                   {item.fetched_at}
                 </span>
               </li>
@@ -130,17 +128,17 @@ export default async function SourcesPage() {
           {cat.items.length === 0 ? (
             <p className="mt-2 text-sm text-ink-muted">No sources in this category.</p>
           ) : (
-            <div className="mt-3 overflow-hidden rounded border border-hairline bg-surface">
+            <div className="panel mt-3 overflow-hidden">
               <table className="w-full text-left text-sm">
-                <thead className="border-b border-hairline font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+                <thead className="border-b border-hairline text-xs font-medium uppercase tracking-[0.12em] text-ink-muted">
                   <tr>
-                    <th className="px-4 py-2 font-medium">Source</th>
-                    <th className="hidden px-4 py-2 font-medium lg:table-cell">
+                    <th className="px-4 py-3 font-medium">Source</th>
+                    <th className="hidden px-4 py-3 font-medium lg:table-cell">
                       Best for
                     </th>
-                    <th className="px-4 py-2 font-medium">Status</th>
-                    <th className="px-4 py-2 font-medium">Items</th>
-                    <th className="hidden px-4 py-2 font-medium md:table-cell">
+                    <th className="px-4 py-3 font-medium">Status</th>
+                    <th className="px-4 py-3 font-medium">Items</th>
+                    <th className="hidden px-4 py-3 font-medium md:table-cell">
                       Last pull
                     </th>
                   </tr>
@@ -173,7 +171,8 @@ export default async function SourcesPage() {
                       </td>
                       <td className="px-4 py-3 align-top">
                         <span
-                          className={`inline-flex rounded border px-1.5 py-0.5 font-mono text-[11px] ${STATUS_CLASS[source.status]}`}
+                          className="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium"
+                          style={STATUS_STYLE[source.status]}
                         >
                           {STATUS_LABEL[source.status]}
                         </span>

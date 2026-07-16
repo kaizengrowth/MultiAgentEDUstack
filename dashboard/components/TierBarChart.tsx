@@ -19,16 +19,16 @@ export function TierBarChart({ counts }: { counts: Record<Tier, number> }) {
         const widthPct = Math.max(2, (count / max) * 100);
         return (
           <div key={tier} className="flex items-center gap-3">
-            <div className="w-6 shrink-0 text-right font-mono text-[11px] text-ink-secondary">
+            <div className="w-7 shrink-0 text-right text-xs font-medium text-ink-secondary">
               T{tier}
             </div>
-            <div className="relative h-4 flex-1 rounded-full bg-surface-raised">
+            <div className="relative h-3.5 flex-1 rounded-full bg-bg">
               <div
-                className="h-4 rounded-full transition-[width]"
+                className="h-3.5 rounded-full transition-[width]"
                 style={{ width: `${widthPct}%`, backgroundColor: TIER_VAR[tier] }}
               />
             </div>
-            <div className="w-10 shrink-0 font-mono text-[12px] font-medium text-ink">
+            <div className="w-10 shrink-0 text-sm font-semibold text-ink">
               {count}
             </div>
           </div>

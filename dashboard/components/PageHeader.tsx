@@ -9,12 +9,16 @@ export function PageHeader({
 }) {
   return (
     <div className="flex flex-wrap items-end justify-between gap-3">
-      <div>
-        <h1 className="font-mono text-lg font-semibold text-ink">{title}</h1>
-        <p className="mt-1 text-sm text-ink-secondary">{description}</p>
+      <div className="max-w-2xl">
+        <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">
+          {title}
+        </h1>
+        <p className="mt-2 text-base leading-relaxed text-ink-secondary">
+          {description}
+        </p>
       </div>
       {meta && (
-        <p className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+        <p className="rounded-full border border-hairline bg-surface-raised px-3 py-1 text-sm text-ink-muted">
           {meta}
         </p>
       )}

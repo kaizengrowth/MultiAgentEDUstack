@@ -25,8 +25,12 @@ const config: Config = {
         tier5: "var(--tier5)",
       },
       fontFamily: {
-        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
+        display: ["var(--font-display)", "Georgia", "serif"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        mono: ["var(--font-sans)", "ui-monospace", "monospace"],
+      },
+      borderRadius: {
+        panel: "14px",
       },
     },
   },

@@ -62,18 +62,21 @@ export default async function OverviewPage() {
   const data = await getOverviewData();
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="font-mono text-lg font-semibold text-ink">Overview</h1>
-        <p className="mt-1 text-sm text-ink-secondary">
-          What the wire desk has on file, right now.
+    <div className="flex flex-col gap-8">
+      <div className="max-w-2xl">
+        <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">
+          Overview
+        </h1>
+        <p className="mt-2 text-base leading-relaxed text-ink-secondary">
+          A clear view of what your team has gathered, curated, and ready to turn
+          into teaching.
         </p>
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         <StatTile label="Dispatches" value={data.curatedCount} sublabel="curated stories" />
-        <StatTile label="Raw items" value={data.rawCount} sublabel="pre-dedup" />
-        <StatTile label="Bulletins" value={data.digestCount} sublabel="digests filed" />
+        <StatTile label="Raw items" value={data.rawCount} sublabel="before dedup" />
+        <StatTile label="Bulletins" value={data.digestCount} sublabel="weekly digests" />
         <StatTile label="Curriculum" value={data.curriculumCount} sublabel="units drafted" />
         <StatTile
           label="Awaiting review"
@@ -83,92 +86,103 @@ export default async function OverviewPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="rounded border border-hairline bg-surface p-4">
-          <h2 className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">
-            Dispatches by tier
+        <div className="panel p-5">
+          <h2 className="text-xs font-medium uppercase tracking-[0.12em] text-ink-muted">
+            Dispatches by credibility tier
           </h2>
-          <div className="mt-3">
+          <div className="mt-4">
             <TierBarChart counts={data.tierCounts} />
           </div>
         </div>
 
-        <div className="rounded border border-hairline bg-surface p-4">
-          <h2 className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">
-            Ingest activity, last 14 days
+        <div className="panel p-5">
+          <h2 className="text-xs font-medium uppercase tracking-[0.12em] text-ink-muted">
+            Gathering activity, last 14 days
           </h2>
-          <div className="mt-3">
+          <div className="mt-4">
             <ActivitySparkline points={data.points} />
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <div className="rounded border border-hairline bg-surface p-4 lg:col-span-2">
-          <div className="flex items-center justify-between">
-            <h2 className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">
+        <div className="panel p-5 lg:col-span-2">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-xs font-medium uppercase tracking-[0.12em] text-ink-muted">
               Recent dispatches
             </h2>
-            <Link href="/dispatches" className="text-[11px] text-accent hover:underline">
-              view all &rarr;
+            <Link
+              href="/dispatches"
+              className="text-sm font-medium text-accent hover:underline"
+            >
+              View all
             </Link>
           </div>
           <ul className="mt-3 flex flex-col divide-y divide-hairline">
             {data.recent.map((item) => (
-              <li key={item.id} className="flex items-center gap-3 py-2">
+              <li key={item.id} className="flex items-center gap-3 py-3">
                 <TierBadge tier={item.tier} label={item.tier_label} />
                 <Link
                   href={`/dispatches/${item.id}`}
-                  className="flex-1 truncate text-sm text-ink hover:text-accent"
+                  className="flex-1 truncate text-base text-ink hover:text-accent"
                 >
                   {item.title}
                 </Link>
                 {item.mention_count > 1 && (
-                  <span className="shrink-0 font-mono text-[10px] text-ink-muted">
+                  <span className="shrink-0 text-xs text-ink-muted">
                     &times;{item.mention_count}
                   </span>
                 )}
               </li>
             ))}
             {data.recent.length === 0 && (
-              <li className="py-6 text-center text-sm text-ink-muted">
-                The queue is empty. Run <code className="font-mono">scripts/ingest.sh</code>.
+              <li className="py-8 text-center text-sm text-ink-muted">
+                Nothing curated yet. Start with{" "}
+                <code className="rounded bg-surface-raised px-1.5 py-0.5 text-ink">
+                  scripts/ingest.sh
+                </code>
+                .
               </li>
             )}
           </ul>
         </div>
 
-        <div className="rounded border border-hairline bg-surface p-4">
-          <h2 className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">
-            Schedule
+        <div className="panel p-5">
+          <h2 className="text-xs font-medium uppercase tracking-[0.12em] text-ink-muted">
+            Cadence
           </h2>
-          <dl className="mt-3 flex flex-col gap-3 text-sm">
+          <dl className="mt-4 flex flex-col gap-4 text-sm">
             <div>
-              <dt className="font-mono text-[11px] text-ink-secondary">Ingest</dt>
-              <dd className="text-ink">02:15 daily &middot; all scouts + dedup</dd>
+              <dt className="font-medium text-ink">Daily gather</dt>
+              <dd className="mt-0.5 text-ink-secondary">
+                02:15 · scouts and dedup
+              </dd>
             </div>
             <div>
-              <dt className="font-mono text-[11px] text-ink-secondary">Synthesis</dt>
-              <dd className="text-ink">Sunday 03:00 &middot; digest + forecast</dd>
+              <dt className="font-medium text-ink">Weekly synthesis</dt>
+              <dd className="mt-0.5 text-ink-secondary">
+                Sunday 03:00 · digest and forecast
+              </dd>
             </div>
             <div>
-              <dt className="font-mono text-[11px] text-ink-secondary">Manual</dt>
-              <dd className="text-ink-secondary">
-                curriculum-scaffold, lab-generation, editorial-review
+              <dt className="font-medium text-ink">Human judgment</dt>
+              <dd className="mt-0.5 text-ink-secondary">
+                Curriculum, labs, and editorial stay on purpose, not on a timer
               </dd>
             </div>
           </dl>
-          <div className="mt-4 flex flex-col gap-1">
+          <div className="mt-5 flex flex-col gap-2">
             <Link
               href="/sources"
-              className="inline-block text-[11px] text-accent hover:underline"
+              className="text-sm font-medium text-accent hover:underline"
             >
-              source catalog &rarr;
+              Browse sources
             </Link>
             <Link
               href="/pipeline"
-              className="inline-block text-[11px] text-accent hover:underline"
+              className="text-sm font-medium text-accent hover:underline"
             >
-              pipeline health &rarr;
+              Pipeline health
             </Link>
           </div>
         </div>

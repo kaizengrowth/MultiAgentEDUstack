@@ -6,11 +6,9 @@ export function EmptyState({
   hint?: string;
 }) {
   return (
-    <div className="rounded border border-dashed border-hairline bg-surface px-6 py-12 text-center">
-      <p className="text-sm text-ink-secondary">{title}</p>
-      {hint && (
-        <p className="mt-2 font-mono text-[11px] text-ink-muted">{hint}</p>
-      )}
+    <div className="rounded-panel border border-dashed border-hairline bg-surface-raised/60 px-6 py-14 text-center">
+      <p className="text-base text-ink-secondary">{title}</p>
+      {hint && <p className="mt-2 text-sm text-ink-muted">{hint}</p>}
     </div>
   );
 }

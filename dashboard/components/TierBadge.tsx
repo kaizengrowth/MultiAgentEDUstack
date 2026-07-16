@@ -11,10 +11,10 @@ const TIER_VAR: Record<Tier, string> = {
 export function TierBadge({ tier, label }: { tier: Tier; label?: string }) {
   return (
     <span
-      className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 font-mono text-[11px] font-semibold tracking-wide"
+      className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold tracking-wide"
       style={{
         color: TIER_VAR[tier],
-        border: `1px solid ${TIER_VAR[tier]}`,
+        border: `1px solid color-mix(in oklab, ${TIER_VAR[tier]} 40%, transparent)`,
         backgroundColor: `color-mix(in oklab, ${TIER_VAR[tier]} 12%, transparent)`,
       }}
       title={label}

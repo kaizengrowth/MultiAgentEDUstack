@@ -3,74 +3,56 @@
 @tailwind utilities;
 
 /*
-  Two editions, not a generic light/dark toggle: the dark mode is "the wire
-  room at night" (near-black blue-charcoal, amber teletype accent, a cyan
-  sequential ramp for credibility tier). Light is "the printed edition"
-  (warm paper, ink-black text, a deeper ochre accent). Same structure, same
-  signal vocabulary, different medium.
+  Learning desk: light-first for education and nonprofit teams.
+  Sage mist ground, deep teal accent, soft notebook atmosphere.
+  Evening mode is a calm study lamp, not a trading terminal.
 */
 
 :root,
-:root[data-theme="dark"] {
-  --bg: #0b0e13;
-  --surface: #141920;
-  --surface-raised: #1c232c;
-  --hairline: #2a323c;
-  --ink: #e8ecef;
-  --ink-secondary: #8b95a1;
-  --ink-muted: #5a6472;
-  --accent: #f0a93c;
-  --accent-ink: #0b0e13;
-  --good: #46a758;
-  --warning: #e8a33d;
-  --critical: #e5484d;
-  --tier1: #7de0ff;
-  --tier2: #4fc3e8;
-  --tier3: #359fc2;
-  --tier4: #2a7b96;
-  --tier5: #1f5a6e;
-}
-
 :root[data-theme="light"] {
-  --bg: #f3f0e8;
-  --surface: #fbfaf5;
+  --bg: #e4eee9;
+  --surface: #f4f9f6;
   --surface-raised: #ffffff;
-  --hairline: #d9d4c7;
-  --ink: #1b1f23;
-  --ink-secondary: #4b5259;
-  --ink-muted: #7a8189;
-  --accent: #a15e08;
-  --accent-ink: #fbfaf5;
-  --good: #2f9e44;
-  --warning: #a66a0a;
-  --critical: #c92a2a;
-  --tier1: #0b7285;
-  --tier2: #1098ad;
-  --tier3: #3bc9db;
-  --tier4: #66d9e8;
-  --tier5: #a8e8ef;
+  --hairline: #c5d4cc;
+  --ink: #1c3330;
+  --ink-secondary: #4a635e;
+  --ink-muted: #6f857f;
+  --accent: #0e6b63;
+  --accent-ink: #f4f9f6;
+  --good: #2d7a4f;
+  --warning: #b86e1a;
+  --critical: #b33a3a;
+  --tier1: #0a6e66;
+  --tier2: #1a7f8c;
+  --tier3: #3a8f7a;
+  --tier4: #5a9a88;
+  --tier5: #7aab9a;
+  --wash-a: rgba(14, 107, 99, 0.09);
+  --wash-b: rgba(45, 122, 79, 0.07);
+  --shadow-soft: 0 1px 0 rgba(28, 51, 48, 0.04), 0 8px 24px rgba(28, 51, 48, 0.06);
 }
 
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    --bg: #f3f0e8;
-    --surface: #fbfaf5;
-    --surface-raised: #ffffff;
-    --hairline: #d9d4c7;
-    --ink: #1b1f23;
-    --ink-secondary: #4b5259;
-    --ink-muted: #7a8189;
-    --accent: #a15e08;
-    --accent-ink: #fbfaf5;
-    --good: #2f9e44;
-    --warning: #a66a0a;
-    --critical: #c92a2a;
-    --tier1: #0b7285;
-    --tier2: #1098ad;
-    --tier3: #3bc9db;
-    --tier4: #66d9e8;
-    --tier5: #a8e8ef;
-  }
+:root[data-theme="dark"] {
+  --bg: #122422;
+  --surface: #1a322f;
+  --surface-raised: #23403c;
+  --hairline: #355650;
+  --ink: #e7f2ee;
+  --ink-secondary: #a8c4bc;
+  --ink-muted: #7a9a92;
+  --accent: #5fbfb4;
+  --accent-ink: #122422;
+  --good: #6fbf8a;
+  --warning: #e0a35a;
+  --critical: #e07a7a;
+  --tier1: #7de0d4;
+  --tier2: #5fc4b8;
+  --tier3: #4aa89c;
+  --tier4: #3a8c82;
+  --tier5: #2e7068;
+  --wash-a: rgba(95, 191, 180, 0.1);
+  --wash-b: rgba(111, 191, 138, 0.08);
+  --shadow-soft: 0 1px 0 rgba(0, 0, 0, 0.2), 0 10px 28px rgba(0, 0, 0, 0.28);
 }
 
 * {
@@ -84,7 +66,18 @@ body {
 }
 
 body {
-  font-feature-settings: "ss01" 1;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(1200px 480px at 8% -10%, var(--wash-a), transparent 55%),
+    radial-gradient(900px 420px at 92% 0%, var(--wash-b), transparent 50%),
+    linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 47px,
+      color-mix(in oklab, var(--hairline) 55%, transparent) 48px
+    );
+  background-size: auto, auto, 100% 48px;
+  background-attachment: fixed;
 }
 
 ::selection {
@@ -92,10 +85,10 @@ body {
   color: var(--accent-ink);
 }
 
-/* Visible keyboard focus everywhere, not just form controls */
 :focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -109,8 +102,6 @@ body {
   }
 }
 
-/* Ticker marquee -- the one signature motion in this UI, a single
-   orchestrated loop, paused on hover, killed under reduced-motion above. */
 @keyframes ticker-scroll {
   from {
     transform: translateX(0);
@@ -120,21 +111,84 @@ body {
   }
 }
 
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .ticker-track {
-  animation: ticker-scroll 60s linear infinite;
+  animation: ticker-scroll 70s linear infinite;
 }
 
 .ticker-track:hover {
   animation-play-state: paused;
 }
 
-/* Hairline scanline texture on the masthead, quiet, not decorative noise */
-.masthead-texture {
-  background-image: repeating-linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.02),
-    rgba(255, 255, 255, 0.02) 1px,
-    transparent 1px,
-    transparent 3px
-  );
+.masthead {
+  background:
+    linear-gradient(
+      105deg,
+      color-mix(in oklab, var(--surface) 92%, var(--accent)) 0%,
+      var(--surface) 42%,
+      color-mix(in oklab, var(--surface) 94%, #2d7a4f) 100%
+    );
+  box-shadow: var(--shadow-soft);
+}
+
+.shell-aside {
+  background: color-mix(in oklab, var(--surface) 88%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.panel {
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.stat-tile {
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-soft);
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.stat-tile:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in oklab, var(--accent) 35%, var(--hairline));
+}
+
+.page-enter {
+  animation: rise-in 420ms ease both;
+}
+
+.nav-link {
+  border-radius: 999px;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.nav-link[data-active="true"] {
+  background: color-mix(in oklab, var(--accent) 14%, var(--surface-raised));
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--accent) 35%, transparent);
+}
+
+.brand-mark {
+  letter-spacing: -0.02em;
+}
+
+.brand-mark .edu {
+  color: var(--accent);
+  font-style: italic;
 }

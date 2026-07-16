@@ -7,13 +7,6 @@ const KIND_VAR: Record<StatusKind, string> = {
   neutral: "var(--ink-muted)",
 };
 
-const ICON: Record<StatusKind, string> = {
-  good: "●", // filled circle
-  warning: "▲", // triangle
-  critical: "✕", // cross
-  neutral: "○", // open circle
-};
-
 const DECISION_KIND: Record<string, StatusKind> = {
   approved: "good",
   changes_requested: "warning",
@@ -32,8 +25,8 @@ const DECISION_KIND: Record<string, StatusKind> = {
 export function StatusBadge({ value }: { value: string | null }) {
   if (!value) {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 text-[11px] font-medium text-ink-muted border border-hairline">
-        {ICON.neutral} pending
+      <span className="inline-flex items-center rounded-full border border-hairline px-2.5 py-0.5 text-xs font-medium text-ink-muted">
+        pending
       </span>
     );
   }
@@ -41,14 +34,14 @@ export function StatusBadge({ value }: { value: string | null }) {
   const color = KIND_VAR[kind];
   return (
     <span
-      className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 text-[11px] font-medium"
+      className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"
       style={{
         color,
-        border: `1px solid ${color}`,
+        border: `1px solid color-mix(in oklab, ${color} 45%, transparent)`,
         backgroundColor: `color-mix(in oklab, ${color} 12%, transparent)`,
       }}
     >
-      {ICON[kind]} {value.replace(/_/g, " ")}
+      {value.replace(/_/g, " ")}
     </span>
   );
 }

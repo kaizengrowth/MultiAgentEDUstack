@@ -1,20 +1,20 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+import { Atkinson_Hyperlegible, Fraunces } from "next/font/google";
 import "./globals.css";
 import { Sidebar } from "@/components/Sidebar";
 import { Ticker } from "@/components/Ticker";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
-const plexMono = IBM_Plex_Mono({
+const display = Fraunces({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-mono",
+  weight: ["500", "600", "700"],
+  variable: "--font-display",
   display: "swap",
 });
 
-const plexSans = IBM_Plex_Sans({
+const body = Atkinson_Hyperlegible({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "700"],
   variable: "--font-sans",
   display: "swap",
 });
@@ -22,9 +22,9 @@ const plexSans = IBM_Plex_Sans({
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "MultiAgentEDUstack -- Wire Desk",
+  title: "MultiAgent EDU Stack -- Learning Desk",
   description:
-    "Dispatches, bulletins, and curriculum from the MultiAgentEDUstack pipeline.",
+    "Source, curate, and scaffold AI curriculum for education teams and nonprofits.",
 };
 
 export default function RootLayout({
@@ -33,26 +33,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="dark">
-      <body className={`${plexMono.variable} ${plexSans.variable} font-sans`}>
+    <html lang="en" data-theme="light">
+      <body className={`${display.variable} ${body.variable} font-sans antialiased`}>
         <div className="flex min-h-screen flex-col">
-          <header className="masthead-texture border-b border-hairline bg-surface">
-            <div className="flex items-center justify-between px-4 py-2.5">
-              <div className="flex items-baseline gap-3">
-                <span className="font-mono text-sm font-bold tracking-tight text-ink">
-                  MULTIAGENT<span className="text-accent">EDU</span>STACK
+          <header className="masthead border-b border-hairline">
+            <div className="flex items-center justify-between px-5 py-4">
+              <div className="flex min-w-0 flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-3">
+                <span className="brand-mark font-display text-xl font-semibold tracking-tight text-ink sm:text-2xl">
+                  MultiAgent <span className="edu">EDU</span> Stack
                 </span>
-                <span className="hidden font-mono text-[11px] uppercase tracking-widest text-ink-muted sm:inline">
-                  Wire Desk
+                <span className="text-sm text-ink-secondary">
+                  Learning desk for curriculum teams
                 </span>
               </div>
-              <div className="flex items-center gap-4">
-                <span className="flex items-center gap-1.5 font-mono text-[11px] text-ink-secondary">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-good opacity-75" />
-                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-good" />
+              <div className="flex shrink-0 items-center gap-3">
+                <span className="hidden items-center gap-1.5 text-sm text-ink-secondary sm:flex">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-good opacity-60" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-good" />
                   </span>
-                  live
+                  Sources updating
                 </span>
                 <ThemeToggle />
               </div>
@@ -61,11 +61,11 @@ export default function RootLayout({
 
           <Ticker />
 
-          <div className="flex flex-1">
-            <aside className="w-56 shrink-0 border-r border-hairline bg-surface">
+          <div className="mx-auto flex w-full max-w-7xl flex-1">
+            <aside className="shell-aside w-52 shrink-0 border-r border-hairline sm:w-56">
               <Sidebar />
             </aside>
-            <main className="flex-1 px-6 py-6">{children}</main>
+            <main className="page-enter flex-1 px-5 py-7 sm:px-8">{children}</main>
           </div>
         </div>
       </body>

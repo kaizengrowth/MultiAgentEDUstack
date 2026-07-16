@@ -3,11 +3,14 @@
 import { useEffect, useState } from "react";
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<"dark" | "light">("light");
 
   useEffect(() => {
     const stored = localStorage.getItem("maes-theme");
-    const initial = stored === "light" ? "light" : "dark";
+    const initial =
+      stored === "dark" || stored === "light"
+        ? stored
+        : "light";
     setTheme(initial);
     document.documentElement.setAttribute("data-theme", initial);
   }, []);
@@ -22,11 +25,12 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      aria-label={theme === "dark" ? "Switch to the paper edition" : "Switch to the night edition"}
-      className="flex items-center gap-2 rounded border border-hairline px-2.5 py-1 text-[11px] uppercase tracking-wider text-ink-secondary hover:text-ink hover:border-ink-muted transition-colors"
+      aria-label={
+        theme === "dark" ? "Switch to daytime view" : "Switch to evening view"
+      }
+      className="rounded-full border border-hairline bg-surface-raised px-3 py-1.5 text-sm text-ink-secondary transition-colors hover:border-accent hover:text-ink"
     >
-      <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent" />
-      {theme === "dark" ? "Night edition" : "Paper edition"}
+      {theme === "dark" ? "Evening" : "Daytime"}
     </button>
   );
 }
