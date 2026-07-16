@@ -2,13 +2,24 @@
 
 ## GitHub Actions (in repo)
 
-Workflow: `.github/workflows/ci.yml`
+Workflows: `.github/workflows/ci.yml` (tests and build) and
+`.github/workflows/claude-review.yml` (automated review).
 
 | Job | When | What |
 | --- | --- | --- |
 | Python tests | every PR + push to `main` | `pytest` via `requirements-dev.txt` |
 | Dashboard build | every PR + push to `main` | `tsc --noEmit` + `next build` against a schema-only SQLite |
 | Dashboard artifact | push to `main` only | uploads `.next/standalone` as a 14-day artifact |
+| PR code review | every non-draft PR commit | `anthropics/claude-code-action@v1` reviews the diff against `CODING_STANDARDS.md` and `.cursor/BUGBOT.md`, posts inline + sticky summary comments |
+| Security review | every non-draft PR commit | `anthropics/claude-code-security-review` scans the diff, comments findings on the PR |
+| Push review | direct push to `main` | Claude reviews the pushed range; opens a `needs-triage` issue only if it finds a boundary violation, correctness bug, leaked credential, or weakened test |
+
+All three review jobs skip silently until the `ANTHROPIC_API_KEY` repo
+secret exists. Enable them once with:
+
+```bash
+gh secret set ANTHROPIC_API_KEY --repo kaizengrowth/MultiAgentEDUstack
+```
 
 Dependabot: `.github/dependabot.yml` (Actions, pip, dashboard npm).
 

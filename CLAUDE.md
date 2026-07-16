@@ -24,7 +24,7 @@ Idea → `/grill-with-docs` → (`/to-spec` → `/to-tickets` when multi-session
 
 ### CI/CD and PR auto-review
 
-GitHub Actions CI is `.github/workflows/ci.yml`. Bugbot PR reviews are enabled via the Cursor dashboard (not a workflow file); project rules are `.cursor/BUGBOT.md`. See `docs/agents/ci-cd.md`.
+GitHub Actions CI is `.github/workflows/ci.yml`. Automated Claude review (PR code review, PR security scan, direct-push-to-main review) is `.github/workflows/claude-review.yml`; it needs the `ANTHROPIC_API_KEY` repo secret and skips quietly without it. Bugbot PR reviews are enabled via the Cursor dashboard (not a workflow file); project rules are `.cursor/BUGBOT.md`. See `docs/agents/ci-cd.md`.
 
 ## Working in this repo
 
