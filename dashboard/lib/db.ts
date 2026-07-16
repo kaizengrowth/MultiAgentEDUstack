@@ -15,6 +15,8 @@ const DB_PATH =
 let cachedDb: Database | null = null;
 let cachedMtimeMs = 0;
 let sqlJsPromise: ReturnType<typeof initSqlJs> | null = null;
+/** Single-flight reload so parallel RSC queries do not close each other's DB. */
+let reloadPromise: Promise<Database> | null = null;
 
 function sqlJsDistDir(): string {
   // Webpack rewrites bare require.resolve(...) to a numeric module id and
@@ -42,12 +44,31 @@ export async function getDb(): Promise<Database> {
   if (cachedDb && stat.mtimeMs === cachedMtimeMs) {
     return cachedDb;
   }
-  const SQL = await getSqlJs();
-  const fileBuffer = fs.readFileSync(DB_PATH);
-  cachedDb?.close();
-  cachedDb = new SQL.Database(fileBuffer);
-  cachedMtimeMs = stat.mtimeMs;
-  return cachedDb;
+  if (!reloadPromise) {
+    const mtimeMs = stat.mtimeMs;
+    reloadPromise = (async () => {
+      const SQL = await getSqlJs();
+      const fileBuffer = fs.readFileSync(DB_PATH);
+      const next = new SQL.Database(fileBuffer);
+      const prev = cachedDb;
+      cachedDb = next;
+      cachedMtimeMs = mtimeMs;
+      // Let in-flight readers on the previous handle finish before closing.
+      if (prev) {
+        setTimeout(() => {
+          try {
+            prev.close();
+          } catch {
+            /* already closed */
+          }
+        }, 5_000);
+      }
+      return next;
+    })().finally(() => {
+      reloadPromise = null;
+    });
+  }
+  return reloadPromise;
 }
 
 /** Run a query and return rows as plain objects, matching column names. */
@@ -58,15 +79,19 @@ export async function query<T = Record<string, unknown>>(
   try {
     const db = await getDb();
     const stmt = db.prepare(sql);
-    stmt.bind(params);
+    if (params.length > 0) {
+      // sql.js bind() with an empty array can leave the statement unusable.
+      stmt.bind(params);
+    }
     const rows: T[] = [];
     while (stmt.step()) {
       rows.push(stmt.getAsObject() as T);
     }
     stmt.free();
     return rows;
-  } catch {
+  } catch (err) {
     // Prerender / missing DB / wasm load failures should not fail the build.
+    console.error("[maes-db] query failed:", sql, err);
     return [];
   }
 }

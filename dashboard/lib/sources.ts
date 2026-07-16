@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import yaml from "js-yaml";
+import { load as loadYaml } from "js-yaml";
 import { query } from "@/lib/db";
 
 export type SourceCategory = {
@@ -66,7 +66,7 @@ const REDDIT_BY_NAME: Record<string, string> = {
 
 export function loadSourceCatalog(): SourcesFile {
   const raw = fs.readFileSync(SOURCES_PATH, "utf8");
-  const data = yaml.load(raw) as SourcesFile;
+  const data = loadYaml(raw) as SourcesFile;
   return {
     categories: data.categories || [],
     items: data.items || [],
