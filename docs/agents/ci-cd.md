@@ -14,12 +14,21 @@ Workflows: `.github/workflows/ci.yml` (tests and build) and
 | Security review | every non-draft PR commit | `anthropics/claude-code-security-review` scans the diff, comments findings on the PR |
 | Push review | direct push to `main` | Claude reviews the pushed range; opens a `needs-triage` issue only if it finds a boundary violation, correctness bug, leaked credential, or weakened test |
 
-All three review jobs skip silently until the `ANTHROPIC_API_KEY` repo
-secret exists. Enable them once with:
+The review jobs skip silently until a credential secret exists. Two options:
 
 ```bash
+# Option A: run on a Claude Pro/Max subscription (no per-run API billing).
+claude setup-token   # interactive; prints a long-lived OAuth token
+gh secret set CLAUDE_CODE_OAUTH_TOKEN --repo kaizengrowth/MultiAgentEDUstack
+
+# Option B: Console API key, billed per use.
 gh secret set ANTHROPIC_API_KEY --repo kaizengrowth/MultiAgentEDUstack
 ```
+
+PR code review and push review accept either secret. The security-review
+job accepts only `ANTHROPIC_API_KEY` and stays skipped on
+subscription-only auth. Subscription runs draw from the same usage
+limits as interactive Claude Code sessions.
 
 Dependabot: `.github/dependabot.yml` (Actions, pip, dashboard npm).
 
