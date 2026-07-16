@@ -73,14 +73,35 @@ export default async function OverviewPage() {
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-        <StatTile label="Dispatches" value={data.curatedCount} sublabel="stories ready to teach from" />
-        <StatTile label="Raw items" value={data.rawCount} sublabel="fresh from sources" />
-        <StatTile label="Bulletins" value={data.digestCount} sublabel="daily digests" />
-        <StatTile label="Curriculum" value={data.curriculumCount} sublabel="units in progress" />
+        <StatTile
+          label="Dispatches"
+          value={data.curatedCount}
+          sublabel="stories ready to teach from"
+          href="/dispatches"
+        />
+        <StatTile
+          label="Raw items"
+          value={data.rawCount}
+          sublabel="fresh from sources"
+          href="/pipeline"
+        />
+        <StatTile
+          label="Bulletins"
+          value={data.digestCount}
+          sublabel="daily digests"
+          href="/bulletins"
+        />
+        <StatTile
+          label="Curriculum"
+          value={data.curriculumCount}
+          sublabel="units in progress"
+          href="/curriculum"
+        />
         <StatTile
           label="Needs a human look"
           value={data.pendingReviewCount}
           sublabel="editorial queue"
+          href="/editorial"
         />
       </div>
 
