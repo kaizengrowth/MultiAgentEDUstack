@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Runtime state, not source
+db/*.sqlite3
+logs/*.log
+digests/
+curriculum/
+labs/
+
+# Credentials
+.env

@@ -1,0 +1,253 @@
+categories:
+  - id: primary
+    label: "Primary & Preprint"
+  - id: academic
+    label: "Academic Labs"
+  - id: lab
+    label: "Lab Blogs"
+  - id: practitioner
+    label: "Practitioner"
+  - id: applied
+    label: "Applied Tooling"
+  - id: video
+    label: "Video"
+  - id: social
+    label: "Social"
+  - id: workshop
+    label: "Workshops & Books"
+  - id: community
+    label: "Community Pulse"
+
+items:
+  - name: "Google Scholar Alerts"
+    url: "https://scholar.google.com/"
+    category: primary
+    best_for: "Per-subfield alerts beat one broad alert"
+  - name: "arXiv cs.CL"
+    url: "https://arxiv.org/list/cs.CL/recent"
+    category: primary
+    best_for: "Daily NLP/LLM preprints"
+  - name: "arXiv cs.AI"
+    url: "https://arxiv.org/list/cs.AI/recent"
+    category: primary
+    best_for: "Daily general-AI preprints"
+  - name: "arXiv cs.LG"
+    url: "https://arxiv.org/list/cs.LG/recent"
+    category: primary
+    best_for: "Daily ML preprints"
+  - name: "Semantic Scholar"
+    url: "https://www.semanticscholar.org/"
+    category: primary
+    best_for: "Citation velocity as a forecasting signal"
+  - name: "Papers with Code"
+    url: "https://paperswithcode.co/"
+    category: primary
+    best_for: "SOTA leaderboards, reproducibility"
+  - name: "OpenReview"
+    url: "https://openreview.net/"
+    category: primary
+    best_for: "Early access to reviewed submissions"
+  - name: "NeurIPS"
+    url: "https://neurips.cc/"
+    category: primary
+    best_for: "Flagship ML conference proceedings"
+  - name: "ICML"
+    url: "https://icml.cc/"
+    category: primary
+    best_for: "Flagship ML conference proceedings"
+  - name: "ICLR"
+    url: "https://iclr.cc/"
+    category: primary
+    best_for: "Flagship deep learning conference"
+  - name: "ACL Anthology"
+    url: "https://aclanthology.org/"
+    category: primary
+    best_for: "NLP proceedings: ACL, EMNLP, NAACL"
+  - name: "Anthropic News"
+    url: "https://www.anthropic.com/news"
+    category: lab
+    best_for: "Ground truth for Claude releases"
+  - name: "OpenAI News"
+    url: "https://openai.com/news/"
+    category: lab
+    best_for: "Model + research releases"
+  - name: "Google DeepMind Blog"
+    url: "https://deepmind.google/blog/"
+    category: lab
+    best_for: "Research + model releases"
+  - name: "Google Research Blog"
+    url: "https://research.google/blog/"
+    category: lab
+    best_for: "Applied + fundamental research"
+  - name: "Meta AI Blog"
+    url: "https://ai.meta.com/blog/"
+    category: lab
+    best_for: "FAIR research + model releases"
+  - name: "Mistral AI News"
+    url: "https://mistral.ai/news/"
+    category: lab
+    best_for: "Open-weight model releases"
+  - name: "Hugging Face Blog"
+    url: "https://huggingface.co/blog"
+    category: lab
+    best_for: "Open-source model + tooling ecosystem"
+  - name: "Import AI"
+    attribution: "Jack Clark"
+    url: "https://importai.substack.com/"
+    category: practitioner
+    best_for: "Weekly synthesis with a policy angle"
+  - name: "The Batch"
+    attribution: "DeepLearning.AI"
+    url: "https://www.deeplearning.ai/the-batch"
+    category: practitioner
+    best_for: "Weekly applied-AI digest"
+  - name: "Ahead of AI"
+    attribution: "Sebastian Raschka"
+    url: "https://magazine.sebastianraschka.com/"
+    category: practitioner
+    best_for: "Deep technical research summaries"
+  - name: "Latent Space"
+    attribution: "swyx & Alessio"
+    url: "https://www.latent.space/"
+    category: practitioner
+    best_for: "AI-engineer-focused newsletter + podcast"
+  - name: "Interconnects"
+    attribution: "Nathan Lambert"
+    url: "https://www.interconnects.ai/"
+    category: practitioner
+    best_for: "Inside frontier labs, post-training focus"
+  - name: "One Useful Thing"
+    attribution: "Ethan Mollick"
+    url: "https://www.oneusefulthing.org/"
+    category: practitioner
+    best_for: "AI for work and education, practitioner framing"
+  - name: "Simon Willison's Blog"
+    url: "https://simonwillison.net/"
+    category: practitioner
+    best_for: "Hands-on tool testing, plain-spoken analysis"
+  - name: "Chip Huyen's Blog"
+    url: "https://huyenchip.com/blog/"
+    category: practitioner
+    best_for: "AI engineering + production systems"
+  - name: "Eugene Yan's Blog"
+    url: "https://eugeneyan.com/"
+    category: practitioner
+    best_for: "Applied ML/LLM systems writing"
+  - name: "Andrej Karpathy"
+    attribution: "YouTube"
+    url: "https://www.youtube.com/@AndrejKarpathy"
+    category: video
+    best_for: "First-principles explainers, builder's view"
+  - name: "Two Minute Papers"
+    url: "https://www.youtube.com/@TwoMinutePapers"
+    category: video
+    best_for: "Fast, digestible paper summaries"
+  - name: "Yannic Kilcher"
+    url: "https://www.youtube.com/@YannicKilcher"
+    category: video
+    best_for: "Deep paper walkthroughs"
+  - name: "X / Twitter"
+    url: "https://x.com/"
+    category: social
+    best_for: "Curate individual researchers, not aggregators"
+  - name: "Bluesky"
+    url: "https://bsky.app/"
+    category: social
+    best_for: "Growing alternate home for research discussion"
+  - name: "O'Reilly Live Events"
+    url: "https://www.oreilly.com/live-events/"
+    category: workshop
+    best_for: "Fastest-turnaround hands-on training"
+  - name: "O'Reilly Online Learning"
+    url: "https://www.oreilly.com/online-learning/"
+    category: workshop
+    best_for: "Early-release books, author's current thinking"
+  - name: "Hacker News"
+    url: "https://news.ycombinator.com/"
+    category: community
+    best_for: "Cross-check credibility with sentiment"
+  - name: "GitHub Trending"
+    attribution: "AI/ML"
+    url: "https://github.com/trending"
+    category: community
+    best_for: "Tooling adoption velocity"
+  - name: "r/MachineLearning"
+    url: "https://www.reddit.com/r/MachineLearning/"
+    category: community
+    best_for: "Research community pulse"
+  - name: "r/LocalLLaMA"
+    url: "https://www.reddit.com/r/LocalLLaMA/"
+    category: community
+    best_for: "Local/open-weight practitioner pulse"
+  - name: "BAIR Blog"
+    attribution: "Berkeley AI Research"
+    url: "https://bair.berkeley.edu/blog/"
+    category: academic
+    best_for: "Academic lab research, plain-language writeups"
+  - name: "Stanford HAI"
+    url: "https://hai.stanford.edu/news"
+    category: academic
+    best_for: "Policy-adjacent academic research, the AI Index report"
+  - name: "The Gradient"
+    url: "https://thegradient.pub/"
+    category: academic
+    best_for: "Academic-adjacent magazine, deep single-topic essays"
+  - name: "NVIDIA Technical Blog"
+    url: "https://developer.nvidia.com/blog/"
+    category: lab
+    best_for: "Infrastructure and inference engineering detail"
+  - name: "Microsoft Research Blog"
+    url: "https://www.microsoft.com/en-us/research/blog/"
+    category: lab
+    best_for: "Research + model releases"
+  - name: "Cohere Blog"
+    url: "https://cohere.com/blog"
+    category: lab
+    best_for: "Enterprise-focused model releases and research"
+  - name: "Stability AI News"
+    url: "https://stability.ai/news"
+    category: lab
+    best_for: "Open-weight image/video/audio model releases"
+  - name: "Lil'Log"
+    attribution: "Lilian Weng"
+    url: "https://lilianweng.github.io/"
+    category: practitioner
+    best_for: "Long-form technical deep dives on agents, diffusion, alignment"
+  - name: "Jay Alammar's Blog"
+    url: "https://jalammar.github.io/"
+    category: practitioner
+    best_for: "Visual, illustrated explanations of model internals"
+  - name: "NLP News"
+    attribution: "Sebastian Ruder"
+    url: "https://www.ruder.io/"
+    category: practitioner
+    best_for: "NLP research synthesis from a working researcher"
+  - name: "Marcus on AI"
+    attribution: "Gary Marcus"
+    url: "https://garymarcus.substack.com/"
+    category: practitioner
+    best_for: "Critical, skeptical counterweight to lab hype"
+  - name: "TLDR AI"
+    url: "https://tldr.tech/ai"
+    category: practitioner
+    best_for: "5-minute daily digest, dense and engineering-focused"
+  - name: "The Neuron"
+    url: "https://www.theneurondaily.com/"
+    category: practitioner
+    best_for: "Practical, workflow-focused daily AI newsletter"
+  - name: "Weights & Biases: Fully Connected"
+    url: "https://wandb.ai/fully-connected"
+    category: applied
+    best_for: "Applied ML engineering tutorials and case studies"
+  - name: "LangChain Blog"
+    url: "https://www.langchain.com/blog"
+    category: applied
+    best_for: "Agent framework patterns, agent tooling releases"
+  - name: "Pinecone Learning Center"
+    url: "https://www.pinecone.io/learn/"
+    category: applied
+    best_for: "RAG and vector-search applied practice"
+  - name: "Machine Learning Street Talk"
+    url: "https://www.youtube.com/@MachineLearningStreetTalk"
+    category: video
+    best_for: "Long-form interviews with researchers, less hype-driven"
