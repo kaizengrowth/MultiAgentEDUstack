@@ -3,56 +3,57 @@
 @tailwind utilities;
 
 /*
-  Learning desk: light-first for education and nonprofit teams.
-  Sage mist ground, deep teal accent, soft notebook atmosphere.
-  Evening mode is a calm study lamp, not a trading terminal.
+  Friendly educational desk.
+  Paper edition: warm parchment and honey (the beige/white the product
+  already earned). Lamp edition: charcoal study room with soft amber.
+  Signature: a bookmark ribbon on the active place in the syllabus nav.
 */
 
 :root,
 :root[data-theme="light"] {
-  --bg: #e4eee9;
-  --surface: #f4f9f6;
+  --bg: #f3ede3;
+  --surface: #fffcf7;
   --surface-raised: #ffffff;
-  --hairline: #c5d4cc;
-  --ink: #1c3330;
-  --ink-secondary: #4a635e;
-  --ink-muted: #6f857f;
-  --accent: #0e6b63;
-  --accent-ink: #f4f9f6;
-  --good: #2d7a4f;
-  --warning: #b86e1a;
+  --hairline: #e0d5c5;
+  --ink: #2a2420;
+  --ink-secondary: #6b5e52;
+  --ink-muted: #8a7b6c;
+  --accent: #c9892e;
+  --accent-ink: #fffaf0;
+  --good: #3a6b8c;
+  --warning: #b86a1a;
   --critical: #b33a3a;
-  --tier1: #0a6e66;
-  --tier2: #1a7f8c;
-  --tier3: #3a8f7a;
-  --tier4: #5a9a88;
-  --tier5: #7aab9a;
-  --wash-a: rgba(14, 107, 99, 0.09);
-  --wash-b: rgba(45, 122, 79, 0.07);
-  --shadow-soft: 0 1px 0 rgba(28, 51, 48, 0.04), 0 8px 24px rgba(28, 51, 48, 0.06);
+  --tier1: #3d5a80;
+  --tier2: #5c7a9a;
+  --tier3: #7a8fa8;
+  --tier4: #9aa8b8;
+  --tier5: #b8c2cc;
+  --ribbon: #c9892e;
+  --wash: rgba(201, 137, 46, 0.08);
+  --shadow-soft: 0 1px 0 rgba(42, 36, 32, 0.03), 0 10px 28px rgba(42, 36, 32, 0.06);
 }
 
 :root[data-theme="dark"] {
-  --bg: #122422;
-  --surface: #1a322f;
-  --surface-raised: #23403c;
-  --hairline: #355650;
-  --ink: #e7f2ee;
-  --ink-secondary: #a8c4bc;
-  --ink-muted: #7a9a92;
-  --accent: #5fbfb4;
-  --accent-ink: #122422;
-  --good: #6fbf8a;
-  --warning: #e0a35a;
-  --critical: #e07a7a;
-  --tier1: #7de0d4;
-  --tier2: #5fc4b8;
-  --tier3: #4aa89c;
-  --tier4: #3a8c82;
-  --tier5: #2e7068;
-  --wash-a: rgba(95, 191, 180, 0.1);
-  --wash-b: rgba(111, 191, 138, 0.08);
-  --shadow-soft: 0 1px 0 rgba(0, 0, 0, 0.2), 0 10px 28px rgba(0, 0, 0, 0.28);
+  --bg: #0b0e13;
+  --surface: #141920;
+  --surface-raised: #1c232c;
+  --hairline: #2a323c;
+  --ink: #eee6da;
+  --ink-secondary: #a89f92;
+  --ink-muted: #7a7268;
+  --accent: #e8b04a;
+  --accent-ink: #1a1408;
+  --good: #7eb0d0;
+  --warning: #e8a33d;
+  --critical: #e5484d;
+  --tier1: #9ec1e0;
+  --tier2: #7aa3c4;
+  --tier3: #5e87a8;
+  --tier4: #4a6d88;
+  --tier5: #3a5366;
+  --ribbon: #e8b04a;
+  --wash: rgba(232, 176, 74, 0.1);
+  --shadow-soft: 0 1px 0 rgba(0, 0, 0, 0.25), 0 12px 32px rgba(0, 0, 0, 0.35);
 }
 
 * {
@@ -68,15 +69,12 @@ body {
 body {
   min-height: 100vh;
   background-image:
-    radial-gradient(1200px 480px at 8% -10%, var(--wash-a), transparent 55%),
-    radial-gradient(900px 420px at 92% 0%, var(--wash-b), transparent 50%),
+    radial-gradient(900px 380px at 100% 0%, var(--wash), transparent 55%),
     linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 47px,
-      color-mix(in oklab, var(--hairline) 55%, transparent) 48px
+      180deg,
+      color-mix(in oklab, var(--surface) 65%, var(--bg)) 0%,
+      var(--bg) 220px
     );
-  background-size: auto, auto, 100% 48px;
   background-attachment: fixed;
 }
 
@@ -88,7 +86,6 @@ body {
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 4px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -111,10 +108,10 @@ body {
   }
 }
 
-@keyframes rise-in {
+@keyframes page-in {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -123,72 +120,116 @@ body {
 }
 
 .ticker-track {
-  animation: ticker-scroll 70s linear infinite;
+  animation: ticker-scroll 75s linear infinite;
 }
 
 .ticker-track:hover {
   animation-play-state: paused;
 }
 
+/* Library-card masthead: soft paper slab, not a SaaS toolbar */
 .masthead {
-  background:
-    linear-gradient(
-      105deg,
-      color-mix(in oklab, var(--surface) 92%, var(--accent)) 0%,
-      var(--surface) 42%,
-      color-mix(in oklab, var(--surface) 94%, #2d7a4f) 100%
-    );
+  background: var(--surface);
+  border-bottom: 1px solid var(--hairline);
   box-shadow: var(--shadow-soft);
 }
 
+.masthead-inner {
+  position: relative;
+}
+
+.masthead-inner::after {
+  content: "";
+  position: absolute;
+  left: 1.25rem;
+  right: 1.25rem;
+  bottom: 0;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--accent) 0%,
+    color-mix(in oklab, var(--accent) 35%, transparent) 42%,
+    transparent 70%
+  );
+}
+
 .shell-aside {
-  background: color-mix(in oklab, var(--surface) 88%, transparent);
-  backdrop-filter: blur(8px);
+  background: color-mix(in oklab, var(--surface) 92%, var(--bg));
 }
 
 .panel {
   border: 1px solid var(--hairline);
-  border-radius: 14px;
+  border-radius: 18px;
   background: var(--surface);
   box-shadow: var(--shadow-soft);
 }
 
 .stat-tile {
   border: 1px solid var(--hairline);
-  border-radius: 14px;
+  border-radius: 18px;
   background: var(--surface-raised);
   box-shadow: var(--shadow-soft);
-  transition: transform 160ms ease, border-color 160ms ease;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease;
 }
 
 .stat-tile:hover {
-  transform: translateY(-1px);
-  border-color: color-mix(in oklab, var(--accent) 35%, var(--hairline));
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--accent) 40%, var(--hairline));
 }
 
 .page-enter {
-  animation: rise-in 420ms ease both;
+  animation: page-in 380ms ease both;
 }
 
+/* Syllabus nav: bookmark ribbon on the active item */
 .nav-link {
-  border-radius: 999px;
+  position: relative;
+  border-radius: 12px;
   transition:
     background-color 160ms ease,
     color 160ms ease,
-    box-shadow 160ms ease;
+    padding-left 160ms ease;
 }
 
 .nav-link[data-active="true"] {
-  background: color-mix(in oklab, var(--accent) 14%, var(--surface-raised));
+  background: var(--surface-raised);
   color: var(--ink);
-  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--accent) 35%, transparent);
+  font-weight: 700;
+  padding-left: 1.35rem;
+  box-shadow: inset 0 0 0 1px var(--hairline);
+}
+
+.nav-link[data-active="true"]::before {
+  content: "";
+  position: absolute;
+  left: 0.45rem;
+  top: 0.45rem;
+  bottom: 0.45rem;
+  width: 4px;
+  border-radius: 999px;
+  background: var(--ribbon);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--ribbon) 30%, transparent);
 }
 
 .brand-mark {
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
 .brand-mark .edu {
   color: var(--accent);
-  font-style: italic;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: var(--surface-raised);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--ink-secondary);
 }

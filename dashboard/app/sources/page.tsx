@@ -51,7 +51,7 @@ export default async function SourcesPage() {
     <div className="flex flex-col gap-6">
       <PageHeader
         title="Sources"
-        description="The curated source library from the Digital Garden explorer, with live counts as new material arrives."
+        description="Your teaching library from the Digital Garden explorer. Counts update as new material arrives."
         meta={`${activeCount} active · ${catalogCount} in catalog`}
       />
 

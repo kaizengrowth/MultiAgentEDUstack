@@ -64,22 +64,22 @@ export default async function OverviewPage() {
   return (
     <div className="flex flex-col gap-8">
       <div className="max-w-2xl">
-        <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">
-          Overview
+        <h1 className="font-display text-[2rem] leading-tight text-ink sm:text-[2.5rem]">
+          Welcome back to the desk
         </h1>
-        <p className="mt-2 text-base leading-relaxed text-ink-secondary">
-          A clear view of what your team has gathered, curated, and ready to turn
-          into teaching.
+        <p className="mt-3 text-base leading-relaxed text-ink-secondary sm:text-lg">
+          Here is what your team has gathered, sorted, and can turn into lessons
+          next.
         </p>
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-        <StatTile label="Dispatches" value={data.curatedCount} sublabel="curated stories" />
-        <StatTile label="Raw items" value={data.rawCount} sublabel="before dedup" />
+        <StatTile label="Dispatches" value={data.curatedCount} sublabel="stories ready to teach from" />
+        <StatTile label="Raw items" value={data.rawCount} sublabel="fresh from sources" />
         <StatTile label="Bulletins" value={data.digestCount} sublabel="weekly digests" />
-        <StatTile label="Curriculum" value={data.curriculumCount} sublabel="units drafted" />
+        <StatTile label="Curriculum" value={data.curriculumCount} sublabel="units in progress" />
         <StatTile
-          label="Awaiting review"
+          label="Needs a human look"
           value={data.pendingReviewCount}
           sublabel="editorial queue"
         />
@@ -87,18 +87,20 @@ export default async function OverviewPage() {
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="panel p-5">
-          <h2 className="text-xs font-medium uppercase tracking-[0.12em] text-ink-muted">
-            Dispatches by credibility tier
-          </h2>
+          <h2 className="font-display text-xl text-ink">By credibility tier</h2>
+          <p className="mt-1 text-sm text-ink-secondary">
+            Higher tiers are closer to primary research.
+          </p>
           <div className="mt-4">
             <TierBarChart counts={data.tierCounts} />
           </div>
         </div>
 
         <div className="panel p-5">
-          <h2 className="text-xs font-medium uppercase tracking-[0.12em] text-ink-muted">
-            Gathering activity, last 14 days
-          </h2>
+          <h2 className="font-display text-xl text-ink">Gathering rhythm</h2>
+          <p className="mt-1 text-sm text-ink-secondary">
+            Items landed over the last two weeks.
+          </p>
           <div className="mt-4">
             <ActivitySparkline points={data.points} />
           </div>
@@ -108,14 +110,12 @@ export default async function OverviewPage() {
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="panel p-5 lg:col-span-2">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="text-xs font-medium uppercase tracking-[0.12em] text-ink-muted">
-              Recent dispatches
-            </h2>
+            <h2 className="font-display text-xl text-ink">Recent dispatches</h2>
             <Link
               href="/dispatches"
-              className="text-sm font-medium text-accent hover:underline"
+              className="text-sm font-semibold text-accent hover:underline"
             >
-              View all
+              See all
             </Link>
           </div>
           <ul className="mt-3 flex flex-col divide-y divide-hairline">
@@ -137,8 +137,8 @@ export default async function OverviewPage() {
             ))}
             {data.recent.length === 0 && (
               <li className="py-8 text-center text-sm text-ink-muted">
-                Nothing curated yet. Start with{" "}
-                <code className="rounded bg-surface-raised px-1.5 py-0.5 text-ink">
+                The desk is empty. Start with{" "}
+                <code className="rounded-md bg-bg px-1.5 py-0.5 text-ink">
                   scripts/ingest.sh
                 </code>
                 .
@@ -148,41 +148,39 @@ export default async function OverviewPage() {
         </div>
 
         <div className="panel p-5">
-          <h2 className="text-xs font-medium uppercase tracking-[0.12em] text-ink-muted">
-            Cadence
-          </h2>
+          <h2 className="font-display text-xl text-ink">How the week runs</h2>
           <dl className="mt-4 flex flex-col gap-4 text-sm">
             <div>
-              <dt className="font-medium text-ink">Daily gather</dt>
+              <dt className="font-semibold text-ink">Every morning</dt>
               <dd className="mt-0.5 text-ink-secondary">
-                02:15 · scouts and dedup
+                Sources are gathered and duplicates are merged
               </dd>
             </div>
             <div>
-              <dt className="font-medium text-ink">Weekly synthesis</dt>
+              <dt className="font-semibold text-ink">Sunday</dt>
               <dd className="mt-0.5 text-ink-secondary">
-                Sunday 03:00 · digest and forecast
+                A digest and forecast draft land for review
               </dd>
             </div>
             <div>
-              <dt className="font-medium text-ink">Human judgment</dt>
+              <dt className="font-semibold text-ink">When you are ready</dt>
               <dd className="mt-0.5 text-ink-secondary">
-                Curriculum, labs, and editorial stay on purpose, not on a timer
+                Curriculum, labs, and editorial stay human-paced
               </dd>
             </div>
           </dl>
           <div className="mt-5 flex flex-col gap-2">
             <Link
               href="/sources"
-              className="text-sm font-medium text-accent hover:underline"
+              className="text-sm font-semibold text-accent hover:underline"
             >
-              Browse sources
+              Browse the source library
             </Link>
             <Link
               href="/pipeline"
-              className="text-sm font-medium text-accent hover:underline"
+              className="text-sm font-semibold text-accent hover:underline"
             >
-              Pipeline health
+              Check pipeline health
             </Link>
           </div>
         </div>

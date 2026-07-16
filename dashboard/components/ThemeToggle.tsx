@@ -8,9 +8,7 @@ export function ThemeToggle() {
   useEffect(() => {
     const stored = localStorage.getItem("maes-theme");
     const initial =
-      stored === "dark" || stored === "light"
-        ? stored
-        : "light";
+      stored === "dark" || stored === "light" ? stored : "light";
     setTheme(initial);
     document.documentElement.setAttribute("data-theme", initial);
   }, []);
@@ -26,11 +24,11 @@ export function ThemeToggle() {
     <button
       onClick={toggle}
       aria-label={
-        theme === "dark" ? "Switch to daytime view" : "Switch to evening view"
+        theme === "dark" ? "Switch to paper edition" : "Switch to lamp edition"
       }
-      className="rounded-full border border-hairline bg-surface-raised px-3 py-1.5 text-sm text-ink-secondary transition-colors hover:border-accent hover:text-ink"
+      className="rounded-full border border-hairline bg-surface-raised px-3.5 py-1.5 text-sm font-medium text-ink-secondary transition-colors hover:border-accent hover:text-ink"
     >
-      {theme === "dark" ? "Evening" : "Daytime"}
+      {theme === "dark" ? "Lamp" : "Paper"}
     </button>
   );
 }

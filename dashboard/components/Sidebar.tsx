@@ -19,10 +19,8 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-col gap-1 px-3 py-5" aria-label="Main">
-      <p className="mb-2 px-3 text-xs font-medium uppercase tracking-[0.14em] text-ink-muted">
-        Browse
-      </p>
+    <nav className="flex flex-col gap-1 px-3 py-6" aria-label="Main">
+      <p className="mb-3 px-3 font-display text-lg text-ink">Syllabus</p>
       {SECTIONS.map((section) => {
         const active =
           section.href === "/"
@@ -33,10 +31,10 @@ export function Sidebar() {
             key={section.href}
             href={section.href}
             data-active={active}
-            className={`nav-link px-3 py-2 text-sm ${
+            className={`nav-link px-3 py-2.5 text-[15px] ${
               active
-                ? "font-bold text-ink"
-                : "text-ink-secondary hover:bg-surface-raised/70 hover:text-ink"
+                ? "text-ink"
+                : "font-medium text-ink-secondary hover:bg-surface-raised/80 hover:text-ink"
             }`}
           >
             {section.label}
