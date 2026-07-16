@@ -10,13 +10,13 @@ out/
 *.tsbuildinfo
 next-env.d.ts
 
-# Runtime state, not source
+# Runtime state, not source (repo-root only; do not ignore dashboard routes)
 db/*.sqlite3
 logs/*.log
-digests/
-curriculum/
-labs/
-transcripts/
+/digests/
+/curriculum/
+/labs/
+/transcripts/
 
 # Credentials
 .env
