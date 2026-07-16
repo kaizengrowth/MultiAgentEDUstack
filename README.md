@@ -8,11 +8,26 @@ six-month lag.
 
 [![Dashboard overview: syllabus nav, live dispatch counts, credibility tiers, and gathering rhythm](docs/images/dashboard-overview.png)](https://kaizencode.art/notepad/ai-curriculum-multi-agent-system/)
 
-*[Curriculum at Model Speed](https://kaizencode.art/notepad/ai-curriculum-multi-agent-system/) — design essay and source table.* The screenshot is the live desk that implements it.
+*[Curriculum at Model Speed](https://kaizencode.art/notepad/ai-curriculum-multi-agent-system/): design essay and source table.* The screenshot is the live desk that implements it.
 
 This is a real, running system, not a design doc. Everything below is either
 verified working against live data, or explicitly marked as a stub with the
 reason it isn't.
+
+## Published output
+
+Pipeline markdown is synced to GitHub under [`published/`](https://github.com/kaizengrowth/MultiAgentEDUstack/tree/main/published), by category and date:
+
+| Category | Path |
+|---|---|
+| Digests | [`published/digests/`](https://github.com/kaizengrowth/MultiAgentEDUstack/tree/main/published/digests) |
+| Forecasts | [`published/forecasts/`](https://github.com/kaizengrowth/MultiAgentEDUstack/tree/main/published/forecasts) |
+| Wiki | [`published/wiki/`](https://github.com/kaizengrowth/MultiAgentEDUstack/tree/main/published/wiki) |
+| Curriculum | [`published/curriculum/`](https://github.com/kaizengrowth/MultiAgentEDUstack/tree/main/published/curriculum) |
+| Labs | [`published/labs/`](https://github.com/kaizengrowth/MultiAgentEDUstack/tree/main/published/labs) |
+| Decay scans | [`published/decay/`](https://github.com/kaizengrowth/MultiAgentEDUstack/tree/main/published/decay) |
+
+Layout notes: [`published/README.md`](https://github.com/kaizengrowth/MultiAgentEDUstack/blob/main/published/README.md).
 
 ## Architecture
 

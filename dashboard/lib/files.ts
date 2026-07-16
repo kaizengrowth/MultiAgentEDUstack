@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
-
-const REPO_ROOT = path.resolve(process.cwd(), "..");
+import { REPO_ROOT } from "./paths";
 
 /** Read a repo-relative markdown path safely. Returns null if missing/unsafe. */
 export function readRepoMarkdown(relativePath: string | null | undefined): string | null {

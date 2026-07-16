@@ -23,3 +23,6 @@ logs/*.log
 
 # Credentials
 .env
+
+# Deploy-time data snapshot (scripts/deploy-dashboard.sh), never committed
+dashboard/.data/

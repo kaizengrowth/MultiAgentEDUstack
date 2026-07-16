@@ -12,7 +12,13 @@
       "Read(//home/tigerlily/.claude/plugins/**)",
       "Bash(git -C /home/tigerlily/Documents/Github/MultiAgentEDUstack diff c3b5718...HEAD -- dashboard/app/bulletins dashboard/app/labs dashboard/app/watch)",
       "Bash(npx tsc *)",
-      "Bash(python3 *)"
+      "Bash(python3 *)",
+      "Bash(git fetch *)",
+      "Bash(git commit -m 'Accept a Claude subscription OAuth token for the review workflow *)",
+      "Bash(git push *)",
+      "Bash(git commit -q -m 'Restrict paper scouts to recent peer-reviewed work; add Semantic Scholar scout *)",
+      "Bash(git commit -q -m 'Label the semantic_scholar scout in the dashboard *)",
+      "Bash(git commit -q -m 'Extend the daily digest with paragraph summaries and insight sections *)"
     ]
   }
 }

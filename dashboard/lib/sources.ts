@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { load as loadYaml } from "js-yaml";
 import { query } from "@/lib/db";
+import { REPO_ROOT } from "@/lib/paths";
 
 export type SourceCategory = {
   id: string;
@@ -50,7 +51,7 @@ type ActivityRow = {
   last_fetch: string | null;
 };
 
-const SOURCES_PATH = path.resolve(process.cwd(), "..", "data", "sources.yaml");
+const SOURCES_PATH = path.resolve(REPO_ROOT, "data", "sources.yaml");
 
 const PLATFORM_BY_NAME: Record<string, string> = {
   "Hacker News": "hn",

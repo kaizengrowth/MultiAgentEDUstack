@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import initSqlJs, { Database } from "sql.js";
+import { REPO_ROOT } from "./paths";
 
 // sql.js (pure WASM) instead of better-sqlite3: this dashboard needs to run
 // in environments without a C toolchain (no native module compilation), and
@@ -9,8 +10,7 @@ import initSqlJs, { Database } from "sql.js";
 // weekly schedule, so reloading on file-mtime-change is plenty fresh.
 
 const DB_PATH =
-  process.env.MAES_DB_PATH ||
-  path.resolve(process.cwd(), "..", "db", "maes.sqlite3");
+  process.env.MAES_DB_PATH || path.resolve(REPO_ROOT, "db", "maes.sqlite3");
 
 let cachedDb: Database | null = null;
 let cachedMtimeMs = 0;

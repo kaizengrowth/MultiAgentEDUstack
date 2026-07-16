@@ -9,6 +9,12 @@ const nextConfig = {
   // package external hands the require to Node at runtime instead.
   experimental: {
     serverComponentsExternalPackages: ["sql.js"],
+    // The .data/ snapshot (see scripts/deploy-dashboard.sh) and the sql.js
+    // wasm are loaded with dynamic fs/require calls the file tracer cannot
+    // see, so include them in every serverless function bundle explicitly.
+    outputFileTracingIncludes: {
+      "/**": ["./.data/**/*", "./node_modules/sql.js/dist/**/*"],
+    },
   },
   // Keep the file watcher inside the dashboard package. Without this,
   // Watchpack can walk parent dirs until it hits EMFILE, and CSS/HMR die.
