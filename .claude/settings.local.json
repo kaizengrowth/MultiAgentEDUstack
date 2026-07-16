@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit -m 'Add test scaffolding: dev requirements and isolated-DB pytest fixtures *)",
+      "Bash(python3 -m pytest tests/test_scouts.py -q -k \"github_relevance\")",
+      "Bash(python3 -m pytest tests/ -q)",
+      "Bash(git commit -m 'Fix AI-relevance false positives: match keywords on word boundaries *)",
+      "Bash(ulimit -n)",
+      "Bash(ulimit -Hn)",
+      "Read(//proc/sys/fs/inotify/**)"
+    ]
+  }
+}

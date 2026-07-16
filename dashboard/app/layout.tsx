@@ -19,6 +19,8 @@ const plexSans = IBM_Plex_Sans({
   display: "swap",
 });
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "MultiAgentEDUstack -- Wire Desk",
   description:

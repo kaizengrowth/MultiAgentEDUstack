@@ -40,6 +40,12 @@ Agent-readable rules for this repo. `/code-review` Standards axis reads this fil
 
 - `node_modules/` and `.next/` are gitignored. Commit source and lockfile only.
 - Prefer simple React patterns already used in `dashboard/`. Do not add speculative abstraction.
+- CI runs `tsc` and `next build` (see `.github/workflows/ci.yml`). Keep the production build green; do not rely on a live `db/maes.sqlite3` being present in CI.
+
+## PR reviews
+
+- Cursor Bugbot uses `.cursor/BUGBOT.md`. Keep it aligned with these standards.
+- Setup steps for Bugbot + required checks: `docs/agents/ci-cd.md`.
 
 ## Secrets
 

@@ -16,21 +16,22 @@ let cachedDb: Database | null = null;
 let cachedMtimeMs = 0;
 let sqlJsPromise: ReturnType<typeof initSqlJs> | null = null;
 
-// A fully static require.resolve() of a plain JSON file -- webpack resolves
-// this fine at build time. Building the .wasm path from a *dynamic* template
-// literal (require.resolve(`sql.js/dist/${file}`)) instead makes webpack
-// treat sql.js/dist as a "context module" and try to parse every file in
-// it, including the .wasm/.zip files it has no loader for. path.join below
-// is plain string math, not a module resolution, so webpack never touches it.
-const sqlJsDistDir = path.join(
-  path.dirname(require.resolve("sql.js/package.json")),
-  "dist"
-);
+function sqlJsDistDir(): string {
+  // Webpack rewrites bare require.resolve(...) to a numeric module id and
+  // breaks createRequire(path.join(...)) during bundling. eval("require")
+  // keeps the real Node resolver for the wasm asset path at runtime.
+  const nodeRequire = eval("require") as NodeRequire;
+  return path.join(
+    path.dirname(nodeRequire.resolve("sql.js/package.json")),
+    "dist"
+  );
+}
 
 async function getSqlJs() {
   if (!sqlJsPromise) {
+    const dist = sqlJsDistDir();
     sqlJsPromise = initSqlJs({
-      locateFile: (file: string) => path.join(sqlJsDistDir, file),
+      locateFile: (file: string) => path.join(dist, file),
     });
   }
   return sqlJsPromise;
@@ -54,15 +55,20 @@ export async function query<T = Record<string, unknown>>(
   sql: string,
   params: (string | number | null)[] = []
 ): Promise<T[]> {
-  const db = await getDb();
-  const stmt = db.prepare(sql);
-  stmt.bind(params);
-  const rows: T[] = [];
-  while (stmt.step()) {
-    rows.push(stmt.getAsObject() as T);
+  try {
+    const db = await getDb();
+    const stmt = db.prepare(sql);
+    stmt.bind(params);
+    const rows: T[] = [];
+    while (stmt.step()) {
+      rows.push(stmt.getAsObject() as T);
+    }
+    stmt.free();
+    return rows;
+  } catch {
+    // Prerender / missing DB / wasm load failures should not fail the build.
+    return [];
   }
-  stmt.free();
-  return rows;
 }
 
 export async function queryOne<T = Record<string, unknown>>(

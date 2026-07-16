@@ -22,6 +22,10 @@ Single-context: root `CONTEXT.md` plus `docs/adr/`. See `docs/agents/domain.md`.
 
 Idea → `/grill-with-docs` → (`/to-spec` → `/to-tickets` when multi-session) → `/implement` (drives `/tdd`) → `/code-review`. Hard bugs → `/diagnosing-bugs`. Architecture upkeep → `/improve-codebase-architecture`. Router → `/ask-matt`. Security pass → `/review-security` (Cursor). These are separate from the curriculum skills under `.claude/skills/`.
 
+### CI/CD and PR auto-review
+
+GitHub Actions CI is `.github/workflows/ci.yml`. Bugbot PR reviews are enabled via the Cursor dashboard (not a workflow file); project rules are `.cursor/BUGBOT.md`. See `docs/agents/ci-cd.md`.
+
 ## Working in this repo
 
 - **SQL is the source of truth.** `db/maes.sqlite3` (gitignored) is the only
