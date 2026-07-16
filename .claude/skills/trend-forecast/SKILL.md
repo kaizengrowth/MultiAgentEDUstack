@@ -24,6 +24,10 @@ Score "how fast is this changing" rather than "how much of this is there." A top
    ```
 3. Write a short markdown note to `digests/forecast-YYYY-MM-DD.md` explaining each entry in one paragraph: what the signal is, why it's a leading indicator and not just noise, and what "worth teaching this" would look like if it keeps accelerating.
 
+## Writing style
+
+No em-dashes in anything you write here (digests, specs, notes). Use a colon, comma, or period instead. This is a standing preference for everything this pipeline produces, not just this skill.
+
 ## Completion criterion
 
 Every watchlist entry states the specific signal (a number, a rate, a co-occurrence) that earned it a place here: "AI agents seem important" is not a forecast, "narrow-subfield arXiv volume in agentic evaluation went from 2/week to 9/week over three weeks, independently corroborated by two newsletters" is.

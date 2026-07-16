@@ -30,6 +30,10 @@ If a topic doesn't cleanly map to one of these four, it's probably not curriculu
    ```
 6. **Hand off to editorial review.** Do not mark this unit `shipped` yourself, that decision belongs to the human-gated editorial-review agent. Leave it `drafted`.
 
+## Writing style
+
+No em-dashes in anything you write here (digests, specs, notes). Use a colon, comma, or period instead. This is a standing preference for everything this pipeline produces, not just this skill.
+
 ## Completion criterion
 
 The spec file states the learning objective as a sentence starting with an actor and an observable verb ("Engineer can...", "Learner identifies..."), not a noun phrase ("Understanding of...", "Introduction to..."). If you can't write it that way, the topic isn't ready to scaffold yet, say so instead of forcing a weak objective through.

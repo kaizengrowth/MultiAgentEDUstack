@@ -20,6 +20,10 @@ Turn everything the scouts landed and the dedup pass curated since the last dige
    ```
    Mark every item that made it into the digest, in one call. Items you deliberately excluded (too thin, redundant with something already covered) stay `new`, don't mark-digested items you didn't actually write up, that's how the queue silently loses things.
 
+## Writing style
+
+No em-dashes in anything you write here (digests, specs, notes). Use a colon, comma, or period instead. This is a standing preference for everything this pipeline produces, not just this skill.
+
 ## Completion criterion
 
 Every item returned by `new-items` at the start of the run is either written up in the digest and marked digested, or left `new` with a reason you can state if asked ("too thin to write up," "same story as #47, already covered"). No item should just vanish.

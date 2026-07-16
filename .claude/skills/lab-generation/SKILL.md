@@ -27,6 +27,10 @@ A lab is a performance environment, not a content-delivery mechanism. Every minu
    python3 scripts/db.py insert-lab-spec --curriculum-unit-id <id> --objective "<the observable end-state>" --spec-path labs/<slug>.md --target-time-pct <your estimate>
    ```
 
+## Writing style
+
+No em-dashes in anything you write here (digests, specs, notes). Use a colon, comma, or period instead. This is a standing preference for everything this pipeline produces, not just this skill.
+
 ## Completion criterion
 
 The spec answers, in writing: what does the learner do, what fraction of that time is target vs. prerequisite vs. noise, and how does the environment know they succeeded without you having to read a transcript of their commands. If any of those three is missing, the spec isn't done.

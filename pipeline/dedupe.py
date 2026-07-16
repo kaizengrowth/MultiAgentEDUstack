@@ -11,7 +11,7 @@ to one row, not three.
 Deliberately rule-based, no LLM call: tier assignment here is a lookup by
 scout/category, and dedup is exact-URL-then-title-similarity. The genuinely
 judgment-heavy synthesis (what does this mean, is it worth teaching) is the
-Synthesis/Digest agent's job, not this one's -- see agents/synthesis-digest.
+Synthesis/Digest agent's job, not this one's -- see .claude/skills/synthesis-digest.
 """
 
 from __future__ import annotations

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CLI the LLM-driven agents (agents/*/SKILL.md) shell out to for every
+"""CLI the LLM-driven agents (.claude/skills/*/SKILL.md) shell out to for every
 database read/write. A skill's job is judgment -- what does this item mean,
 is it worth teaching, is the lab objective observable -- not raw SQL, so
 that judgment gets captured here as small, named, scriptable operations
