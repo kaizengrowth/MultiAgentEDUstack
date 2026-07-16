@@ -1,6 +1,26 @@
 # MultiAgentEDUstack
 
 Read `README.md` first for the architecture and what's real vs. stubbed.
+Read `CONTEXT.md` for domain vocabulary and `CODING_STANDARDS.md` before writing code.
+Read ADRs under `docs/adr/` that touch the area you're changing.
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues on `kaizengrowth/MultiAgentEDUstack` via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Canonical roles map 1:1 to tracker labels (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: root `CONTEXT.md` plus `docs/adr/`. See `docs/agents/domain.md`.
+
+### Engineering flow (Matt Pocock)
+
+Idea → `/grill-with-docs` → (`/to-spec` → `/to-tickets` when multi-session) → `/implement` (drives `/tdd`) → `/code-review`. Hard bugs → `/diagnosing-bugs`. Architecture upkeep → `/improve-codebase-architecture`. Router → `/ask-matt`. Security pass → `/review-security` (Cursor). These are separate from the curriculum skills under `.claude/skills/`.
 
 ## Working in this repo
 
