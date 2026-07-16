@@ -10,6 +10,23 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ["sql.js"],
   },
+  // Keep the file watcher inside the dashboard package. Without this,
+  // Watchpack can walk parent dirs until it hits EMFILE, and CSS/HMR die.
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.watchOptions = {
+        ...(config.watchOptions || {}),
+        ignored: [
+          "**/.git/**",
+          "**/node_modules/**",
+          "**/.next/**",
+          "**/transcripts/**",
+          "**/db/*.sqlite3",
+        ],
+      };
+    }
+    return config;
+  },
 };
 
 module.exports = nextConfig;
