@@ -1,0 +1,14 @@
+---
+description: Never add AI vendor attribution to commits, PRs, or generated docs
+alwaysApply: true
+---
+
+# No AI commit attribution
+
+Never add any of the following to git commits, pull requests, code comments, or generated docs:
+
+- `Co-authored-by:` trailers naming Cursor, Claude, Grok, Copilot, Composer, or any other AI product or model
+- `Made-with:` / `Made with` trailers naming those products
+- `--trailer` flags that inject AI attribution
+
+Commit messages should contain only the subject and body you write for the change. If a hook or environment still injects an AI trailer, strip it before finishing (rewrite the commit without the trailer) rather than leaving it in history.
