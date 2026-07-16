@@ -123,6 +123,46 @@ def test_insert_digest(conn, capsys):
     assert row == ("2026-07-06", "2026-07-12", "digests/2026-07-12.md", 17)
 
 
+def test_recent_digests_filters_by_days(conn, capsys):
+    conn.execute(
+        """
+        INSERT INTO digests (run_at, period_start, period_end, markdown_path, item_count)
+        VALUES
+          (datetime('now', '-10 days'), '2026-07-01', '2026-07-01', 'digests/old.md', 2),
+          (datetime('now', '-2 days'), '2026-07-10', '2026-07-10', 'digests/new.md', 5)
+        """
+    )
+    conn.commit()
+    run_cli("recent-digests", "--days", "7")
+    lines = [ln for ln in capsys.readouterr().out.splitlines() if ln.strip()]
+    assert len(lines) == 1
+    import json
+    payload = json.loads(lines[0])
+    assert payload["markdown_path"] == "digests/new.md"
+    assert payload["item_count"] == 5
+
+
+def test_insert_wiki(conn, capsys):
+    run_cli(
+        "insert-wiki",
+        "--title", "Week of 2026-07-12",
+        "--period-start", "2026-07-06",
+        "--period-end", "2026-07-12",
+        "--markdown-path", "wiki/week-2026-07-12.md",
+        "--digest-count", "6",
+    )
+    row = conn.execute(
+        "SELECT title, period_start, period_end, markdown_path, digest_count FROM wiki_pages"
+    ).fetchone()
+    assert row == (
+        "Week of 2026-07-12",
+        "2026-07-06",
+        "2026-07-12",
+        "wiki/week-2026-07-12.md",
+        6,
+    )
+
+
 def test_insert_watchlist(conn, capsys):
     run_cli(
         "insert-watchlist",

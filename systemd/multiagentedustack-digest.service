@@ -1,0 +1,7 @@
+[Unit]
+Description=MultiAgentEDUstack daily article digest
+
+[Service]
+Type=oneshot
+ExecStart=%h/Documents/Github/MultiAgentEDUstack/scripts/daily-digest.sh
+WorkingDirectory=%h/Documents/Github/MultiAgentEDUstack

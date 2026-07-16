@@ -24,11 +24,15 @@ raw_items (SQLite)
         ▼
 curated_items
         │
-        │  .claude/skills/synthesis-digest -- weekly, via headless Claude Code
+        │  .claude/skills/synthesis-digest -- daily, via headless Claude Code
         ▼
 digests/*.md  +  topics assigned back onto curated_items
         │
-        │  .claude/skills/trend-forecast -- weekly, reads assigned topics
+        │  .claude/skills/weekly-wiki -- Sundays, rolls daily digests
+        ▼
+wiki/week-*.md
+        │
+        │  .claude/skills/trend-forecast -- Sundays, reads assigned topics
         ▼
 forecast_watchlist
         │
@@ -50,17 +54,26 @@ that have gone stale.
 
 ## What's actually running right now
 
-Two systemd user timers, installed and enabled on this machine:
+Three systemd user timers (plus a deprecated synthesis alias):
 
 - `multiagentedustack-ingest.timer`: **02:15 daily.** Runs all seven scouts
   and the dedup pass. Deterministic, no LLM call, no cost. Offset from the
   author's existing `open-brain-compile.timer` (02:30) to avoid contention.
-- `multiagentedustack-synthesis.timer`: **Sunday 03:00 weekly.** Runs
-  `synthesis-digest` and `trend-forecast` headlessly via `claude -p`,
-  reusing whatever Claude Code login is already active on this machine.
+- `multiagentedustack-digest.timer`: **03:00 daily.** Runs `synthesis-digest`
+  headlessly via `claude -p` for new-article summaries.
+- `multiagentedustack-weekly.timer`: **Sunday 03:30.** Runs `weekly-wiki`
+  then `trend-forecast` headlessly via `claude -p`.
+
+If you still have the old Sunday-only unit enabled, migrate:
+
+```bash
+systemctl --user disable --now multiagentedustack-synthesis.timer
+systemctl --user enable --now multiagentedustack-digest.timer
+systemctl --user enable --now multiagentedustack-weekly.timer
+```
 
 Check them: `systemctl --user list-timers 'multiagentedustack-*'`
-Logs: `logs/ingest-YYYYMMDD.log`, `logs/synthesis-YYYYMMDD.log` (14/8 kept).
+Logs: `logs/ingest-*.log`, `logs/digest-*.log`, `logs/weekly-*.log`.
 
 `curriculum-scaffold`, `lab-generation`, and `editorial-review` are **not**
 on a timer, they're judgment calls worth being in the loop for. Run them
@@ -76,7 +89,7 @@ SQL is the source of truth; digests, curriculum, and lab specs are
 regenerable views over it, the same discipline as the author's OB1/Open
 Brain setup ("the wiki is a build artifact"). Schema: `db/schema.sql`.
 The live database (`db/maes.sqlite3`) and generated output
-(`digests/`, `curriculum/`, `labs/`, `transcripts/`) are gitignored:
+(`digests/`, `wiki/`, `curriculum/`, `labs/`, `transcripts/`) are gitignored:
 runtime state, not source.
 
 Everything an agent skill reads or writes goes through `scripts/db.py`
@@ -101,7 +114,7 @@ scripts.
 | Bluesky scout | **Real adapter, unverified from this network** | Free (handle + app password, no paid tier), but this sandbox's network got blocked by Bluesky's edge while building this. Should work from a normal residential/office network |
 | X/Twitter scout | **Real adapter, inert without a paid API tier** | X's v2 API requires paid access for meaningful read scope as of 2026; this repo doesn't assume you're paying for it |
 | Credibility + Dedup | **Real, rule-based** | Tier lookup by scout/category, exact-URL then title-similarity merge. No LLM call |
-| Synthesis-Digest, Trend-Forecast | **Real, LLM-driven, scheduled** | Verified end to end via headless `claude -p` against live data |
+| Synthesis-Digest (daily), Weekly-Wiki + Trend-Forecast (Sunday) | **Real, LLM-driven, scheduled** | Verified end to end via headless `claude -p` against live data |
 | Curriculum-Scaffold, Lab-Generation | **Real, LLM-driven, manual** | Judgment calls, run by hand rather than unattended |
 | Editorial-Review | **Real, human-gated** | Produces the two-axis report and explicitly refuses to auto-approve anything; a decision is only recorded after a human states one |
 | Lab provisioning (live cloud sandboxes) | **Not built** | `lab-generation` produces a spec only. This repo has no cloud credentials wired in, and standing up billed infrastructure isn't something an unattended agent should do on its own judgment. Turning a spec into a real environment is a separate, explicitly-authorized step you take by hand |

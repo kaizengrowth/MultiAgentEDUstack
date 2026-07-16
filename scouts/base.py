@@ -20,17 +20,11 @@ def get_connection() -> sqlite3.Connection:
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(DB_PATH)
     conn.execute("PRAGMA foreign_keys = ON;")
-    if not _is_initialized(conn):
-        conn.executescript(SCHEMA_PATH.read_text())
-        conn.commit()
+    # Always apply schema.sql: every statement is CREATE IF NOT EXISTS, so
+    # existing DBs pick up additive tables (e.g. wiki_pages) on next connect.
+    conn.executescript(SCHEMA_PATH.read_text())
+    conn.commit()
     return conn
-
-
-def _is_initialized(conn: sqlite3.Connection) -> bool:
-    row = conn.execute(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name='raw_items'"
-    ).fetchone()
-    return row is not None
 
 
 def insert_item(

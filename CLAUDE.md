@@ -29,15 +29,16 @@ GitHub Actions CI is `.github/workflows/ci.yml`. Automated Claude review (PR cod
 ## Working in this repo
 
 - **SQL is the source of truth.** `db/maes.sqlite3` (gitignored) is the only
-  durable state; `digests/`, `curriculum/`, `labs/`, `transcripts/` are all
-  regenerable output. Never hand-edit a generated digest or spec, fix the
-  underlying data and regenerate.
+  durable state; `digests/`, `wiki/`, `curriculum/`, `labs/`, `transcripts/`
+  are all regenerable output. Never hand-edit a generated digest, wiki page,
+  or spec; fix the underlying data and regenerate.
 - **Every database read/write goes through `scripts/db.py`.** Don't write
   freehand SQL in a skill or a one-off script; add a subcommand to `db.py`
   if the operation doesn't exist yet.
-- **Six agent skills live in `.claude/skills/`**, not a plain `agents/`
-  folder, that's the path Claude Code auto-discovers and invokes via
-  `/skill-name`. If you add a seventh agent, it goes here too.
+- **Curriculum agent skills live in `.claude/skills/`**, not a plain
+  `agents/` folder; Claude Code auto-discovers them via `/skill-name`.
+  Scheduled LLM skills: `synthesis-digest` (daily), `weekly-wiki` and
+  `trend-forecast` (Sunday).
 - **No em-dashes in anything this repo generates or documents.** Standing
   preference, applies to digests, specs, commit messages, everything.
 
@@ -65,8 +66,8 @@ category lookup) in `pipeline/dedupe.py`, or it'll default to tier 4.
 ```bash
 bash scripts/ingest.sh                 # all scouts + dedup, no LLM
 python3 scripts/db.py new-items         # see what's queued
-claude -p "/synthesis-digest" --allowedTools "Bash Read Write Edit Glob Grep"
-claude -p "/trend-forecast" --allowedTools "Bash Read Write Edit Glob Grep"
+bash scripts/daily-digest.sh            # or: claude -p "/synthesis-digest" ...
+bash scripts/weekly.sh                  # Sunday: /weekly-wiki then /trend-forecast
 claude -p "/curriculum-scaffold" --allowedTools "Bash Read Write Edit"
 claude -p "/lab-generation" --allowedTools "Bash Read Write Edit"
 # editorial-review and decay-deprecation: run interactively, not headless,

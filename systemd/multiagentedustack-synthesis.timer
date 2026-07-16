@@ -1,10 +1,10 @@
 [Unit]
-Description=Run MultiAgentEDUstack weekly synthesis + forecast
+Description=DEPRECATED: use multiagentedustack-digest.timer (daily) and multiagentedustack-weekly.timer (Sunday)
 
 [Timer]
-# Sunday 03:00 -- after a full week of nightly ingests, ahead of the start
-# of the work week.
-OnCalendar=Sun *-*-* 03:00:00
+# Historically Sunday-only; now daily so legacy enables still get article digests.
+# Disable this unit after enabling multiagentedustack-digest.timer.
+OnCalendar=*-*-* 03:00:00
 Persistent=true
 
 [Install]

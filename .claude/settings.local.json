@@ -8,7 +8,11 @@
       "Bash(git commit -m 'Fix AI-relevance false positives: match keywords on word boundaries *)",
       "Bash(ulimit -n)",
       "Bash(ulimit -Hn)",
-      "Read(//proc/sys/fs/inotify/**)"
+      "Read(//proc/sys/fs/inotify/**)",
+      "Read(//home/tigerlily/.claude/plugins/**)",
+      "Bash(git -C /home/tigerlily/Documents/Github/MultiAgentEDUstack diff c3b5718...HEAD -- dashboard/app/bulletins dashboard/app/labs dashboard/app/watch)",
+      "Bash(npx tsc *)",
+      "Bash(python3 *)"
     ]
   }
 }

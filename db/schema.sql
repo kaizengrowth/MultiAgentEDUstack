@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS item_merges (
     PRIMARY KEY (raw_item_id, curated_item_id)
 );
 
--- One row per weekly digest run (Synthesis / Digest agent output).
+-- One row per daily digest run (Synthesis / Digest agent output).
 CREATE TABLE IF NOT EXISTS digests (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     run_at TEXT NOT NULL DEFAULT (datetime('now')),
@@ -118,6 +118,18 @@ CREATE TABLE IF NOT EXISTS decay_flags (
     resolution TEXT                      -- 'regenerated' | 'archived' | null while open
 );
 
+-- Weekly wiki pages: regenerable rollups of daily digests (Sunday build).
+CREATE TABLE IF NOT EXISTS wiki_pages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    period_start TEXT NOT NULL,
+    period_end TEXT NOT NULL,
+    markdown_path TEXT NOT NULL,
+    digest_count INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 CREATE INDEX IF NOT EXISTS idx_raw_items_scout ON raw_items(scout);
 CREATE INDEX IF NOT EXISTS idx_curated_items_tier ON curated_items(tier);
 CREATE INDEX IF NOT EXISTS idx_curated_items_status ON curated_items(status);
+CREATE INDEX IF NOT EXISTS idx_digests_run_at ON digests(run_at);

@@ -8,6 +8,7 @@ const SECTIONS = [
   { href: "/sources", label: "Sources" },
   { href: "/dispatches", label: "Dispatches" },
   { href: "/bulletins", label: "Bulletins" },
+  { href: "/wiki", label: "Wiki" },
   { href: "/watch", label: "Watch" },
   { href: "/curriculum", label: "Curriculum" },
   { href: "/labs", label: "Labs" },

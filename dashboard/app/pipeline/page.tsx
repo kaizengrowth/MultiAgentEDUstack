@@ -96,7 +96,7 @@ export default async function PipelinePage() {
                       {row.n}
                     </td>
                     <td className="px-4 py-2 font-mono text-[11px] text-ink-muted">
-                      {row.last_fetch || "—"}
+                      {row.last_fetch || "never"}
                     </td>
                   </tr>
                 ))}
@@ -110,16 +110,18 @@ export default async function PipelinePage() {
         <h2 className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">
           Schedule
         </h2>
-        <dl className="mt-3 grid gap-3 text-sm sm:grid-cols-3">
+        <dl className="mt-3 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <dt className="font-mono text-[11px] text-ink-secondary">Ingest</dt>
             <dd className="text-ink">02:15 daily · scouts + dedup</dd>
           </div>
           <div>
-            <dt className="font-mono text-[11px] text-ink-secondary">
-              Synthesis
-            </dt>
-            <dd className="text-ink">Sunday 03:00 · digest + forecast</dd>
+            <dt className="font-mono text-[11px] text-ink-secondary">Digest</dt>
+            <dd className="text-ink">03:00 daily · article summaries</dd>
+          </div>
+          <div>
+            <dt className="font-mono text-[11px] text-ink-secondary">Weekly</dt>
+            <dd className="text-ink">Sunday 03:30 · wiki + forecast</dd>
           </div>
           <div>
             <dt className="font-mono text-[11px] text-ink-secondary">Manual</dt>

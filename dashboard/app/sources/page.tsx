@@ -181,7 +181,7 @@ export default async function SourcesPage() {
                         {source.itemCount}
                       </td>
                       <td className="hidden px-4 py-3 align-top font-mono text-[11px] text-ink-muted md:table-cell">
-                        {source.lastFetch || "—"}
+                        {source.lastFetch || "never"}
                       </td>
                     </tr>
                   ))}

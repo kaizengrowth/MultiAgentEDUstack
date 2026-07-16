@@ -29,8 +29,12 @@ _Avoid_: clustering, LLM ranking
 ### Synthesis and forecast
 
 **Digest**:
-A weekly, topic-grouped markdown summary of curated items from a period, produced by synthesis-digest. Topics get written back onto curated items.
+A daily, topic-grouped markdown brief of newly curated articles, produced by synthesis-digest. Topics get written back onto curated items.
 _Avoid_: newsletter, report, summary (as the artifact name)
+
+**Wiki page**:
+A Sunday rollup of that week's daily digests into a durable teaching-oriented summary, produced by weekly-wiki. Regenerable build artifact, like digests.
+_Avoid_: encyclopedia, knowledge base, second digest
 
 **Forecast watchlist**:
 Leading-indicator candidates likely to matter in roughly 8–12 weeks. Velocity and signal, not volume.

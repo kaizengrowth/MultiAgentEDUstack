@@ -15,14 +15,14 @@ export default async function BulletinsPage() {
     <div className="flex flex-col gap-6">
       <PageHeader
         title="Bulletins"
-        description="Weekly synthesis digests filed by synthesis-digest."
+        description="Daily article digests filed by synthesis-digest. The Sunday rollup lives under Wiki."
         meta={`${digests.length} filed`}
       />
 
       {digests.length === 0 ? (
         <EmptyState
           title="No bulletins on file yet."
-          hint='Run: claude -p "/synthesis-digest" --allowedTools "Bash Read Write Edit Glob Grep"'
+          hint="Run: bash scripts/daily-digest.sh"
         />
       ) : (
         <ul className="divide-y divide-hairline rounded border border-hairline bg-surface">

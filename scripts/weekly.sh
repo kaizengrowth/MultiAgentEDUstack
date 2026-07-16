@@ -1,36 +1,35 @@
 #!/usr/bin/env bash
-# Invoked by the multiagentedustack-synthesis.timer systemd user unit.
-# Runs the LLM-driven half of the pipeline via headless Claude Code:
-# synthesis-digest first (it assigns topics new items need), then
-# trend-forecast (reads those topics to score velocity).
+# Invoked by the multiagentedustack-weekly.timer systemd user unit.
+# Sunday LLM half of the pipeline:
+#   1. weekly-wiki  -- roll daily digests into a durable wiki page
+#   2. trend-forecast -- velocity signals for the watchlist
 #
-# Does NOT run curriculum-scaffold, lab-generation, or editorial-review --
-# those stay interactive by design (curriculum/lab drafting is a judgment
-# call worth being in the loop for, and editorial-review is explicitly
-# human-gated and refuses to auto-approve anything). Run those by hand:
-#   claude -p "/curriculum-scaffold" --allowedTools "Bash Read Write Edit"
+# Daily article digests run separately via daily-digest.sh.
+# curriculum-scaffold, lab-generation, and editorial-review stay manual.
 
 set -uo pipefail
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 LOG_DIR="$DIR/logs"
-mkdir -p "$LOG_DIR" "$DIR/digests"
-LOG="$LOG_DIR/synthesis-$(date +%Y%m%d).log"
+mkdir -p "$LOG_DIR" "$DIR/digests" "$DIR/wiki"
+LOG="$LOG_DIR/weekly-$(date +%Y%m%d).log"
 
 cd "$DIR"
 
 {
-    echo "=== MultiAgentEDUstack weekly synthesis -- $(date -Is) ==="
+    echo "=== MultiAgentEDUstack weekly wiki + forecast -- $(date -Is) ==="
 
-    echo "--- synthesis-digest ---"
-    claude -p "/synthesis-digest" --allowedTools "Bash Read Write Edit Glob Grep"
+    echo "--- weekly-wiki ---"
+    claude -p "/weekly-wiki" --allowedTools "Bash Read Write Edit Glob Grep"
 
     echo "--- trend-forecast ---"
     claude -p "/trend-forecast" --allowedTools "Bash Read Write Edit Glob Grep"
 
-    echo "=== weekly synthesis complete ==="
+    echo "=== weekly run complete ==="
 } >> "$LOG" 2>&1
 
 STATUS=$?
-ls -1t "$LOG_DIR"/synthesis-*.log 2>/dev/null | tail -n +9 | xargs -r rm --
+ls -1t "$LOG_DIR"/weekly-*.log 2>/dev/null | tail -n +9 | xargs -r rm --
+# Keep legacy synthesis-*.log cleanup during the rename window.
+ls -1t "$LOG_DIR"/synthesis-*.log 2>/dev/null | tail -n +5 | xargs -r rm --
 exit $STATUS

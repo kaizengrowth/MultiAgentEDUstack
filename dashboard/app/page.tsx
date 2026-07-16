@@ -65,18 +65,17 @@ export default async function OverviewPage() {
     <div className="flex flex-col gap-8">
       <div className="max-w-2xl">
         <h1 className="font-display text-[2rem] leading-tight text-ink sm:text-[2.5rem]">
-          Welcome back to the desk
+          Welcome back to the blackboard
         </h1>
         <p className="mt-3 text-base leading-relaxed text-ink-secondary sm:text-lg">
-          Here is what your team has gathered, sorted, and can turn into lessons
-          next.
+          Here are the latest AI research, news, blog posts, YouTube video transcripts, and social media sources, to run in the pipeline for curriculum brainstorming and testing.
         </p>
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         <StatTile label="Dispatches" value={data.curatedCount} sublabel="stories ready to teach from" />
         <StatTile label="Raw items" value={data.rawCount} sublabel="fresh from sources" />
-        <StatTile label="Bulletins" value={data.digestCount} sublabel="weekly digests" />
+        <StatTile label="Bulletins" value={data.digestCount} sublabel="daily digests" />
         <StatTile label="Curriculum" value={data.curriculumCount} sublabel="units in progress" />
         <StatTile
           label="Needs a human look"
@@ -153,13 +152,13 @@ export default async function OverviewPage() {
             <div>
               <dt className="font-semibold text-ink">Every morning</dt>
               <dd className="mt-0.5 text-ink-secondary">
-                Sources are gathered and duplicates are merged
+                Sources are gathered, duplicates merged, then a daily digest
               </dd>
             </div>
             <div>
               <dt className="font-semibold text-ink">Sunday</dt>
               <dd className="mt-0.5 text-ink-secondary">
-                A digest and forecast draft land for review
+                A weekly wiki rollup and forecast draft land for review
               </dd>
             </div>
             <div>

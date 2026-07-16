@@ -1,0 +1,10 @@
+[Unit]
+Description=Run MultiAgentEDUstack daily article digest
+
+[Timer]
+# 03:00 daily, after nightly ingest at 02:15 so new curated items are ready.
+OnCalendar=*-*-* 03:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

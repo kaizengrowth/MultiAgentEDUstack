@@ -4,12 +4,13 @@ Agent-readable rules for this repo. `/code-review` Standards axis reads this fil
 
 ## Source of truth
 
-- SQL is durable state. `db/maes.sqlite3` is gitignored runtime state; regenerate digests, curriculum, labs, and transcripts from the DB rather than hand-editing them.
+- SQL is durable state. `db/maes.sqlite3` is gitignored runtime state; regenerate digests, wiki pages, curriculum, labs, and transcripts from the DB rather than hand-editing them.
 - Schema lives in `db/schema.sql`. Prefer additive migrations; document hard trade-offs as ADRs under `docs/adr/`.
 
 ## Database access
 
 - Every database read or write goes through `scripts/db.py`. Do not embed freehand SQL in skills, one-off scripts, or dashboard code paths that bypass the CLI.
+- Exception: the dashboard reads SQLite directly through `dashboard/lib/db.ts` (read-only by design, see `.cursor/BUGBOT.md`). Read-only SELECTs in dashboard pages are fine; any dashboard write path is not.
 - If an operation does not exist yet, add a subcommand to `db.py` (and a test under `tests/`) before using it.
 
 ## Agents and skills

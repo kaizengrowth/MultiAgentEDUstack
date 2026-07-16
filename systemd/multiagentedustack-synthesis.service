@@ -1,7 +1,9 @@
 [Unit]
-Description=MultiAgentEDUstack weekly synthesis + trend forecast
+Description=DEPRECATED: use multiagentedustack-digest.service (daily digest)
+# Kept so older installs that still enable synthesis.timer keep working.
+# Prefer: multiagentedustack-digest.timer + multiagentedustack-weekly.timer
 
 [Service]
 Type=oneshot
-ExecStart=%h/Documents/Github/MultiAgentEDUstack/scripts/weekly.sh
+ExecStart=%h/Documents/Github/MultiAgentEDUstack/scripts/daily-digest.sh
 WorkingDirectory=%h/Documents/Github/MultiAgentEDUstack

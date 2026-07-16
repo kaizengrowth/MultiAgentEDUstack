@@ -71,6 +71,50 @@ def cmd_insert_digest(args: argparse.Namespace) -> None:
     print(f"digest recorded: {args.markdown_path}")
 
 
+def cmd_recent_digests(args: argparse.Namespace) -> None:
+    conn = get_connection()
+    rows = conn.execute(
+        """
+        SELECT id, run_at, period_start, period_end, markdown_path, item_count
+        FROM digests
+        WHERE date(run_at) >= date('now', ?)
+        ORDER BY run_at ASC, id ASC
+        """,
+        (f"-{args.days} days",),
+    ).fetchall()
+    conn.close()
+    for row in rows:
+        print(json.dumps({
+            "id": row[0],
+            "run_at": row[1],
+            "period_start": row[2],
+            "period_end": row[3],
+            "markdown_path": row[4],
+            "item_count": row[5],
+        }))
+
+
+def cmd_insert_wiki(args: argparse.Namespace) -> None:
+    conn = get_connection()
+    conn.execute(
+        """
+        INSERT INTO wiki_pages
+            (title, period_start, period_end, markdown_path, digest_count)
+        VALUES (?, ?, ?, ?, ?)
+        """,
+        (
+            args.title,
+            args.period_start,
+            args.period_end,
+            args.markdown_path,
+            args.digest_count,
+        ),
+    )
+    conn.commit()
+    conn.close()
+    print(f"wiki recorded: {args.markdown_path}")
+
+
 def cmd_insert_watchlist(args: argparse.Namespace) -> None:
     conn = get_connection()
     conn.execute(
@@ -208,6 +252,21 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--markdown-path", required=True)
     p.add_argument("--item-count", type=int, required=True)
     p.set_defaults(func=cmd_insert_digest, period_start=None)
+
+    p = sub.add_parser(
+        "recent-digests",
+        help="List digest runs from the last N days (for weekly-wiki)",
+    )
+    p.add_argument("--days", type=int, default=7)
+    p.set_defaults(func=cmd_recent_digests)
+
+    p = sub.add_parser("insert-wiki", help="Record a completed weekly wiki page")
+    p.add_argument("--title", required=True)
+    p.add_argument("--period-start", required=True)
+    p.add_argument("--period-end", required=True)
+    p.add_argument("--markdown-path", required=True)
+    p.add_argument("--digest-count", type=int, required=True)
+    p.set_defaults(func=cmd_insert_wiki)
 
     p = sub.add_parser("insert-watchlist", help="Add a trend-forecasting watchlist entry")
     p.add_argument("--topic", required=True)

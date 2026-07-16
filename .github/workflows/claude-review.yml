@@ -79,7 +79,9 @@ jobs:
 
       - name: Claude security scan
         if: ${{ secrets.ANTHROPIC_API_KEY != '' }}
-        uses: anthropics/claude-code-security-review@main
+        # Pinned to a commit because this action receives the API key and
+        # publishes no release tags. Bump the SHA deliberately, not via @main.
+        uses: anthropics/claude-code-security-review@0c6a49f1fa56a1d472575da86a94dbc1edb78eda
         with:
           claude-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
           comment-pr: true

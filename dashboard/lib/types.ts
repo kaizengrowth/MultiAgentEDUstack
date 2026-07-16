@@ -35,6 +35,16 @@ export interface Digest {
   item_count: number;
 }
 
+export interface WikiPage {
+  id: number;
+  title: string;
+  period_start: string;
+  period_end: string;
+  markdown_path: string;
+  digest_count: number;
+  created_at: string;
+}
+
 export interface WatchlistEntry {
   id: number;
   topic: string;

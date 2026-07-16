@@ -30,6 +30,7 @@ def test_get_connection_initializes_schema_on_fresh_db(conn):
         "editorial_reviews",
         "telemetry_events",
         "decay_flags",
+        "wiki_pages",
     }
     assert expected <= tables
 
@@ -39,8 +40,8 @@ def test_get_connection_enables_foreign_keys(conn):
 
 
 def test_get_connection_is_reentrant(db_path):
-    """A second connection to an already-initialized db must not re-run the
-    schema script or fail."""
+    """A second connection re-applies CREATE IF NOT EXISTS and must not wipe
+    existing rows or fail."""
     c1 = base.get_connection()
     c1.execute(
         "INSERT INTO raw_items (scout, source_url, title) VALUES ('t', 'u', 'x')"
