@@ -38,6 +38,43 @@ def cmd_new_items(args: argparse.Namespace) -> None:
         }))
 
 
+def cmd_item_details(args: argparse.Namespace) -> None:
+    conn = get_connection()
+    if args.item_ids:
+        placeholders = ",".join("?" for _ in args.item_ids)
+        where = f"ci.id IN ({placeholders})"
+        params = list(args.item_ids)
+    else:
+        where = "ci.status = 'new'"
+        params = []
+    rows = conn.execute(
+        f"""
+        SELECT ci.id, ci.title, ci.canonical_url, ci.tier, ci.tier_label,
+               ci.mention_count, ci.topic,
+               ri.scout, ri.summary, ri.published_at, ri.raw_metadata
+        FROM curated_items ci
+        JOIN item_merges im ON im.curated_item_id = ci.id
+        JOIN raw_items ri ON ri.id = im.raw_item_id
+        WHERE {where}
+        ORDER BY ci.id ASC, ri.id ASC
+        """,
+        params,
+    ).fetchall()
+    conn.close()
+    for row in rows:
+        summary = row[8]
+        if summary and args.summary_chars:
+            summary = summary[: args.summary_chars]
+        print(json.dumps({
+            "id": row[0], "title": row[1], "url": row[2],
+            "tier": row[3], "tier_label": row[4],
+            "mention_count": row[5], "topic": row[6],
+            "scout": row[7], "summary": summary,
+            "published_at": row[9],
+            "raw_metadata": json.loads(row[10]) if row[10] else {},
+        }))
+
+
 def cmd_set_topic(args: argparse.Namespace) -> None:
     conn = get_connection()
     conn.execute("UPDATE curated_items SET topic = ? WHERE id = ?", (args.topic, args.item_id))
@@ -272,6 +309,14 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("new-items", help="List curated items not yet digested")
     p.add_argument("--limit", type=int, default=100)
     p.set_defaults(func=cmd_new_items)
+
+    p = sub.add_parser(
+        "item-details",
+        help="Show curated items joined to their raw scout rows (summary, venue)",
+    )
+    p.add_argument("item_ids", type=int, nargs="*")
+    p.add_argument("--summary-chars", type=int, default=600)
+    p.set_defaults(func=cmd_item_details)
 
     p = sub.add_parser("set-topic", help="Assign a topic to a curated item")
     p.add_argument("item_id", type=int)
