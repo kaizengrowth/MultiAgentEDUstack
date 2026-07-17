@@ -30,6 +30,9 @@ cd "$DIR"
     echo "--- publish-output ---"
     bash "$DIR/scripts/publish-output.sh" || echo "publish-output reported failure"
 
+    echo "--- deploy-dashboard ---"
+    bash "$DIR/scripts/deploy-dashboard.sh" || echo "deploy-dashboard reported failure"
+
     echo "=== weekly run complete ==="
 } >> "$LOG" 2>&1
 

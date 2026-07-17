@@ -14,6 +14,12 @@ set -euo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$DIR"
 
+# systemd timers run with a minimal PATH; pick up nvm's node if needed.
+if ! command -v npx >/dev/null 2>&1 && [[ -s "$HOME/.nvm/nvm.sh" ]]; then
+    # shellcheck disable=SC1091
+    . "$HOME/.nvm/nvm.sh"
+fi
+
 SNAPSHOT="dashboard/.data"
 
 if [[ ! -f db/maes.sqlite3 ]]; then

@@ -32,7 +32,20 @@ limits as interactive Claude Code sessions.
 
 Dependabot: `.github/dependabot.yml` (Actions, pip, dashboard npm).
 
-There is no hosted deploy target in this repo yet. "CD" today means publishing the dashboard standalone build artifact from `main`. Wire a host (Vercel, Fly, systemd unit, etc.) later and replace or extend the artifact job.
+## Dashboard deploy (Vercel)
+
+The dashboard is hosted on Vercel: https://dashboard-eta-mocha-67.vercel.app
+(project `dashboard`, team `what-we-will`). Deploys go through
+`scripts/deploy-dashboard.sh`, which snapshots the local data (SQLite DB,
+`data/sources.yaml`, `published/`) into `dashboard/.data/` and ships it
+with the build; the app auto-detects the snapshot via
+`dashboard/lib/paths.ts`. The daily digest and weekly timers redeploy at
+the end of each run, so the live site refreshes itself; run the script by
+hand to publish sooner. One-time setup on a new machine: `npx vercel login`
+then `npx vercel link --yes --scope what-we-will` from `dashboard/`.
+
+The CI artifact job still uploads the standalone build from `main` as a
+fallback for self-hosting.
 
 ## Cursor Bugbot (PR auto-review)
 
